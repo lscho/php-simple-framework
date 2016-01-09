@@ -14,8 +14,8 @@
 		}
 		//获取配置
 		static function init(){
-			if(empty(APP::$config)&&file_exists(LIB_FILE.'config.php')){
-				APP::$config=include LIB_FILE.'config.php';
+			if(empty(APP::$config)&&file_exists('./config.php')){
+				APP::$config=include './config.php';
 			}
 		}
 		//路由

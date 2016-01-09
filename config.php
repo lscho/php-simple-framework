@@ -13,7 +13,7 @@
 		    'prefix' => 'ey_',		    			
 		),
 		'api'=>array(
-			'name'=>'api',
+			'name'=>'API',
 			'type'=>'json'
 		),
 		'app'=>array(
