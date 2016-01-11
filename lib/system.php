@@ -12,11 +12,14 @@
 			//路由分发
 			APP::route();
 		}
-		//获取配置
+		//初始化
 		static function init(){
-			if(empty(APP::$config)&&file_exists('./config.php')){
-				APP::$config=include './config.php';
-			}
+			//加载配置
+			if(empty(APP::$config)&&file_exists('./config.php')) APP::$config=include './config.php';
+			//加载系统函数库
+			include LIB_FILE.'function.php';
+			//加载用户函数库
+			if(file_exists(APP_FILE.'common/function.php')) include APP_FILE.'common/function.php';
 		}
 		//路由
 		static function route(){
@@ -45,18 +48,22 @@
 			//查找路径
 			$file=array(
 				'Rest'=>APP_FILE.'rest/',
-				'Model'=>APP_FILE.'Model/',
-				'Controller'=>APP_FILE.'Controller/',
+				'Model'=>APP_FILE.'model/',
+				'Controller'=>APP_FILE.'controller/',
 			);
 			foreach($file as $k=>$v){
 				if(strstr($classname,$k)){
-					if(file_exists($v.$classname.'.class.php')){
-						return include $v.$classname.'.class.php';
-					}else{
-						APP::error('File not found:'.$v.$classname.'.class.php');
-					}
+					APP::load($v.$classname.'.class.php');
 					break;
 				}
+			}
+		}
+		//手动加载
+		static function load($file){
+			if(file_exists($file)){
+				include $file;
+			}else{
+				APP::error('File not found:'.$flie);
 			}
 		}
 	}
@@ -125,9 +132,7 @@
 	   function display($tpl=0){
 	   		$tpl=$tpl?$tpl:APP::$__controller.'_'.APP::$__action;
 	        $tplfile = APP_FILE.APP::$config['app']['view_file']. $tpl.'.html';
-	        if (!file_exists($tplfile)) {
-	        	APP::error('can not load template file : ' . $tplfile);
-	        }
+	        if (!file_exists($tplfile)) APP::error('can not load template file : ' . $tplfile);
 	        $compliefile = APP_FILE.APP::$config['app']['runtime_file'].md5($tpl).'.php';	//缓存文件
 	        if (!file_exists($compliefile) || filemtime($tplfile) > filemtime($compliefile)) {
 	        	$_v=new View();
@@ -138,6 +143,8 @@
 	}
 	//Rest
 	class Rest{
-		
+		function json($data=array(),$status=200,$err=''){
+			header( 'HTTP/1.1 '.$status.' '.$srr);
+		}
 	}
 ?>
