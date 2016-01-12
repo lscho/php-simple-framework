@@ -44,9 +44,12 @@
 				}
 				$parameter=str_replace($matchs[0],"",rtrim($_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],APP::$config['url']['suffix']));
 				$parames=explode('/',$parameter);
-				if($_GET['c']==APP::$config['api']['file']&&isset($parames[1]))$GET['id']=$parames[1];
-				for ($i=1; $i <count($parames) ; $i=$i+2) { 
-					if(!empty($parames[$i]))$_GET[$parames[$i]]=$parames[$i+1];
+				if($_GET['c']==APP::$config['api']['file']&&isset($parames[1])){
+					$_GET['id']=$parames[1];
+				}else{
+					for ($i=1; $i <count($parames) ; $i=$i+2) { 
+						if(!empty($parames[$i]))$_GET[$parames[$i]]=$parames[$i+1];
+					}
 				}
 			}
 			if($_GET['c']==APP::$config['api']['file']){
