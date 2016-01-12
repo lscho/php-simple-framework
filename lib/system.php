@@ -2,6 +2,7 @@
 	//核心
 	class APP{
 		public static $config;
+		public static $__module;
 		public static $__controller;
 		public static $__api;
 		public static $__action;	
@@ -54,8 +55,11 @@
 				APP::$__api=$_GET['c'];
 				APP::$__action=$_GET['a'];
 			}else{
+				APP::$__module=$_GET['m'];
 				APP::$__controller=$_GET['c'];
 				APP::$__action=$_GET['a'];
+				$class=$_GET['c'].'Controller';
+				$action=$_GET['a'].'Action';
 			}
 			$obj=new $class;
 			$obj->$action();
@@ -73,6 +77,7 @@
 				'Model'=>APP_FILE.'model/',
 				'Controller'=>APP_FILE.'controller/',
 			);
+			if(!empty(APP::$__module))$file['Controller']=$file['Controller'].APP::$__module.'/';
 			foreach($file as $k=>$v){
 				if(strstr($classname,$k)){
 					APP::load($v.$classname.'.class.php');
@@ -106,7 +111,7 @@
 	//视图
 	class View{
 	    //编译模版
-	    function parse($tpl){
+	    function parse($tpl,$module=""){
 	        $fp   = @fopen($tpl, 'r');
 	        $text = fread($fp, filesize($tpl));
 	        fclose($fp);
@@ -137,7 +142,7 @@
 	            '<?php if (count((array)\$\1)) foreach((array)\$\1 as \$this->vars[\'\2\']=>$this->vars[\'\3\']) {?>'
 	        );
 	        $text = preg_replace($pattern, $replacement, $text);
-	        $compliefile = APP_FILE.APP::$config['app']['runtime_file'].md5(basename($tpl,'.html')) . '.php';
+	        $compliefile = APP_FILE.APP::$config['app']['runtime_file'].$module.md5(basename($tpl,'.html')) . '.php';
 	        if ($fp = @fopen($compliefile, 'w')) {
 	            fputs($fp, $text);
 	            fclose($fp);
@@ -152,13 +157,14 @@
         	$this->vars[$k] = $v;
     	}
 	   function display($tpl=0){
+	   		$module=empty(APP::$__module)?"":APP::$__module.'/';
 	   		$tpl=$tpl?$tpl:APP::$__controller.'_'.APP::$__action;
-	        $tplfile = APP_FILE.APP::$config['app']['view_file']. $tpl.'.html';
+	        $tplfile = APP_FILE.APP::$config['app']['view_file'].$module. $tpl.'.html';
 	        if (!file_exists($tplfile)) APP::error('can not load template file : ' . $tplfile);
-	        $compliefile = APP_FILE.APP::$config['app']['runtime_file'].md5($tpl).'.php';	//缓存文件
+	        $compliefile = APP_FILE.APP::$config['app']['runtime_file'].$module.md5($tpl).'.php';	//缓存文件
 	        if (!file_exists($compliefile) || filemtime($tplfile) > filemtime($compliefile)) {
 	        	$_v=new View();
-	            $_v->parse($tplfile);
+	            $_v->parse($tplfile,$module);
 	        }
 	        include_once($compliefile);
 	    }
