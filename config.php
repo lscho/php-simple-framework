@@ -13,12 +13,22 @@
 		    'prefix' => 'ey_',		    			
 		),
 		'api'=>array(
-			'name'=>'API',
+			'file'=>'API',
 			'type'=>'json'
 		),
 		'app'=>array(
 			'view_file'=>'view/',
 			'runtime_file'=>'runtime/'
-		)
+		),
+		'url'=>array(
+			'suffix'=>'.html'
+		),
+		'rewrite' => array(
+			'admin/index.html' => 'admin/main/index',
+			'admin/<c>_<a>.html'    => 'admin/<c>/<a>', 
+			'<c>/<a>'          => '<c>/<a>',
+			'<c>/'          => '<c>/index',
+			'/'                => 'main/index',
+		),
 	);
 ?>

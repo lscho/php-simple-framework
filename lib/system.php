@@ -4,7 +4,7 @@
 		public static $config;
 		public static $__controller;
 		public static $__api;
-		public static $__action;
+		public static $__action;	
 		//启动
 		static function run(){
 			//初始化
@@ -16,27 +16,49 @@
 		static function init(){
 			//加载配置
 			if(empty(APP::$config)&&file_exists('./config.php')) APP::$config=include './config.php';
-			//加载系统函数库
-			include LIB_FILE.'function.php';
-			//加载用户函数库
-			if(file_exists(APP_FILE.'common/function.php')) include APP_FILE.'common/function.php';
 		}
 		//路由
 		static function route(){
-			$route=explode('/', $_SERVER['PATH_INFO']);
-			if($route[1]==self::$config['api']['name']){
-				$class=$route[2].'Rest';
+			if(!empty(APP::$config['rewrite'])){
+				if( ($pos = strpos( $_SERVER['REQUEST_URI'], '?' )) !== false )
+					parse_str( substr( $_SERVER['REQUEST_URI'], $pos + 1 ), $_GET );
+				foreach(APP::$config['rewrite'] as $rule => $mapper){
+					if('/' == $rule)$rule = '';
+					if(0!==stripos($rule, 'http://'))
+						$rule = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\') .'/'.$rule;
+					$rule = '/'.str_ireplace(array('\\\\', 'http://', '/', '<', '>',  '.'), 
+						array('', '', '\/', '(?<', '>\w+)', '\.'), $rule).'/i';
+					if(preg_match($rule, 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $matchs)){
+						$route = explode("/", $mapper);
+						if(isset($route[2])){
+							list($_GET['m'], $_GET['c'], $_GET['a']) = $route;
+						}else{
+							list($_GET['c'], $_GET['a']) = $route;
+						}
+						foreach($matchs as $matchkey => $matchval){
+							if(!is_int($matchkey))$_GET[$matchkey] = $matchval;
+						}
+						break;
+					}
+				}
+				$parameter=str_replace($matchs[0],"",rtrim($_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],APP::$config['url']['suffix']));
+				$parames=explode('/',$parameter);
+				if($_GET['c']==APP::$config['api']['file']&&isset($parames[1]))$GET['id']=$parames[1];
+				for ($i=1; $i <count($parames) ; $i=$i+2) { 
+					if(!empty($parames[$i]))$_GET[$parames[$i]]=$parames[$i+1];
+				}
+			}
+			if($_GET['c']==APP::$config['api']['file']){
+				$class=$_GET['a'].'Rest';
 				$action=strtolower($_SERVER['REQUEST_METHOD']).'Action';
-				APP::$__api=$route[2];
-				APP::$__action=strtolower($_SERVER['REQUEST_METHOD']);
+				APP::$__api=$_GET['c'];
+				APP::$__action=$_GET['a'];
 			}else{
-				$class=empty($route[1])?'indexController':strtolower($route[1]).'Controller';
-				$action=empty($route[2])?'indexAction':strtolower($route[2]).'Action';
-				APP::$__controller=empty($route[1])?'index':strtolower($route[1]);
-				APP::$__action=empty($route[2])?'index':strtolower($route[2]);
+				APP::$__controller=$_GET['c'];
+				APP::$__action=$_GET['a'];
 			}
 			$obj=new $class;
-			$obj->$action();			
+			$obj->$action();
 		}
 		//错误提示
 		static function error($msg){
