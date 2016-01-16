@@ -8,6 +8,7 @@
 		public static $__action;	
 		//启动
 		static function run(){
+			error_reporting(E_ALL || ~E_NOTICE);
 			//初始化
 			APP::init();
 			//路由分发
@@ -145,7 +146,10 @@
 	            '<?php if (count((array)\$\1)) foreach((array)\$\1 as \$this->vars[\'\2\']=>$this->vars[\'\3\']) {?>'
 	        );
 	        $text = preg_replace($pattern, $replacement, $text);
-	        $compliefile = APP_FILE.APP::$config['app']['runtime_file'].$module.md5(basename($tpl,'.html')) . '.php';
+	        $basefile=APP_FILE.APP::$config['app']['runtime_file'];
+	        if(!is_dir($basefile))mkdir($basefile,0777);
+	        if(!empty($module)&&!is_dir($basefile.$module))mkdir($basefile.$module,0777);
+	        $compliefile = $basefile.$module.md5(basename($tpl,'.html')) . '.php';
 	        if ($fp = @fopen($compliefile, 'w')) {
 	            fputs($fp, $text);
 	            fclose($fp);
@@ -170,6 +174,11 @@
 	            $_v->parse($tplfile,$module);
 	        }
 	        include_once($compliefile);
+	    }
+	    function __call($method,$arg){
+	    	if(in_array(strtolower($method),array('ispost','isget','ishead','isdelete','isput'))){
+	    		return strtolower($_SERVER['REQUEST_METHOD']) == strtolower(substr($method,2));
+	    	}	    	
 	    }
 	}
 	//Rest

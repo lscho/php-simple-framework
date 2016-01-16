@@ -1,6 +1,0 @@
-<?php $this->display('head')?>
-
-<?php echo $this->vars['title']?>
-
-<br>
-admin

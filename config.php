@@ -18,7 +18,7 @@
 		),
 		'app'=>array(
 			'view_file'=>'view/',
-			'runtime_file'=>'runtime/'
+			'runtime_file'=>'runtime/chache/'
 		),
 		'url'=>array(
 			'suffix'=>'.html'
@@ -28,7 +28,12 @@
 			'admin/<c>_<a>.html'    => 'admin/<c>/<a>', 
 			'<c>/<a>'          => '<c>/<a>',
 			'<c>/'          => '<c>/index',
+			'<c>'          => '<c>/index',
 			'/'                => 'main/index',
+		),
+		'upload'=>array(
+			'list'=>'jpg,json,zip,rar',
+			'file'=>'upload/'
 		),
 	);
 ?>
