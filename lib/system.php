@@ -1,25 +1,18 @@
 <?php
-	//核心
 	class APP{
 		public static $config;
 		public static $__module;
 		public static $__controller;
 		public static $__api;
 		public static $__action;	
-		//启动
 		static function run(){
 			error_reporting(E_ALL || ~E_NOTICE);
-			//初始化
 			APP::init();
-			//路由分发
 			APP::route();
 		}
-		//初始化
 		static function init(){
-			//加载配置
 			if(empty(APP::$config)&&file_exists('./config.php')) APP::$config=include './config.php';
 		}
-		//路由
 		static function route(){
 			if(!empty(APP::$config['rewrite'])){
 				if( ($pos = strpos( $_SERVER['REQUEST_URI'], '?' )) !== false )
@@ -68,14 +61,11 @@
 			$obj=new $class;
 			$obj->$action();
 		}
-		//错误提示
 		static function error($msg){
 			$msg=APP_DEBUG?$msg:'error';
 			exit($msg);
 		}
-		//自动加载
 		static function classLoader($classname){
-			//查找路径
 			$file=array(
 				'Rest'=>APP_FILE.'rest/',
 				'Model'=>APP_FILE.'model/',
@@ -89,7 +79,6 @@
 				}
 			}
 		}
-		//手动加载
 		static function load($file){
 			if(file_exists($file)){
 				include $file;
@@ -98,9 +87,7 @@
 			}
 		}
 	}
-	//注册自动加载
 	spl_autoload_register('APP::classLoader');
-	//模型
 	require_once LIB_FILE.'db.php';
 	class Model extends db{
 		function __construct(){
@@ -112,9 +99,7 @@
 			return $this;
 		}
 	}
-	//视图
 	class View{
-	    //编译模版
 	    function parse($tpl,$module=""){
 	        $fp   = @fopen($tpl, 'r');
 	        $text = fread($fp, filesize($tpl));
@@ -156,7 +141,6 @@
 	        }
 	    }
 	}
-	//控制器
 	class Controller{
 		private $_v;
 		private $vars = array();
@@ -181,7 +165,6 @@
 	    	}	    	
 	    }
 	}
-	//Rest
 	class Rest{
 		function json($data=array(),$status=200,$err=''){
 			header( 'HTTP/1.1 '.$status.' '.$srr);
