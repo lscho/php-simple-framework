@@ -16,5 +16,6 @@
 			$this->display();
 		}
 	}
-**简介**
-从上面代码可以看出主要完成了路由、自动加载、模型、模版引擎等功能。[核心代码](https://github.com/eyblog/mvc/blob/master/lib/system.php)不到160行左右
+**简介** 
+
+从上面代码可以看出主要完成了路由、自动加载、模型、模版引擎等功能。[核心代码](https://github.com/eyblog/mvc/blob/master/lib/system.php)160行左右
