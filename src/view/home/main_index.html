@@ -1,0 +1,11 @@
+<br>-------------------------上面是baseController输出的<br>
+{include file='head'}
+<br>-------------------------上面是head输出的<br>
+{if $users}
+users's data
+{/if}
+<br>-------------------------上面是判断users是否存在<br>
+{foreach $cate k=>v}
+	{$v.name}
+{/foreach}
+<br>-------------------------上面是foreach循环

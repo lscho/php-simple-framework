@@ -46,28 +46,22 @@
 					}
 				}
 			}
-			if($_GET['c']==APP::$config['api']['file']){
-				$class=$_GET['a'].'Rest';
-				$action=strtolower($_SERVER['REQUEST_METHOD']).'Action';
-				APP::$__api=$_GET['c'];
-				APP::$__action=$_GET['a'];
-			}else{
-				APP::$__module=$_GET['m'];
-				APP::$__controller=$_GET['c'];
-				APP::$__action=$_GET['a'];
-				$class=$_GET['c'].'Controller';
-				$action=$_GET['a'].'Action';
-			}
+			$_GET['m']=!empty($_GET['m'])?$_GET['m']:'home';
+			APP::$__module=$_GET['m'];
+			APP::$__controller=$_GET['c'];
+			APP::$__action=$_GET['a'];
+			$class=$_GET['c'].'Controller';
+			$action=$_GET['a'].'Action';
 			$obj=new $class;
 			$obj->$action();
 		}
 		static function error($msg){
+			header("Content-Type:text/html;charset=utf8");
 			$msg=APP_DEBUG?$msg:'error';
 			exit($msg);
 		}
 		static function classLoader($classname){
 			$file=array(
-				'Rest'=>APP_FILE.'rest/',
 				'Model'=>APP_FILE.'model/',
 				'Controller'=>APP_FILE.'controller/',
 			);
@@ -162,12 +156,7 @@
 	    function __call($method,$arg){
 	    	if(in_array(strtolower($method),array('ispost','isget','ishead','isdelete','isput'))){
 	    		return strtolower($_SERVER['REQUEST_METHOD']) == strtolower(substr($method,2));
-	    	}	    	
+	    	}
 	    }
-	}
-	class Rest{
-		function json($data=array(),$status=200,$err=''){
-			header( 'HTTP/1.1 '.$status.' '.$srr);
-		}
 	}
 ?>

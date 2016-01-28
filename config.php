@@ -3,18 +3,14 @@
 		'db'=>array(
 			//必选项
 		    'database_type' => 'mysql',
-		    'database_name' => 'ey',
+		    'database_name' => 'es',
 		    'server' => '127.0.0.1',
 		    'username' => 'root',
 		    'password' => '123456',
 		    'charset' => 'utf8',
 		    //可选项
 		    'port' => 3306,
-		    'prefix' => 'ey_',		    			
-		),
-		'api'=>array(
-			'file'=>'API',
-			'type'=>'json'
+		    'prefix' => 'es_',		    			
 		),
 		'app'=>array(
 			'view_file'=>'view/',
