@@ -9,13 +9,4 @@
 			$this->assign('users',$data);				//赋值到模版
 			$this->display();
 		}
-		function testAction(){
-			$arr['1']=999;
-			$arr[1]=999;
-
-			$arr1[]=9999;
-			$arr1[]=99999888;
-			$arr1['1']=9999;
-			var_dump($arr1);
-		}
 	}
