@@ -57,14 +57,11 @@
 		}
 		static function error($msg){
 			header("Content-Type:text/html;charset=utf8");
-			$msg=APP_DEBUG?$msg:'error';
+			APP_DEBUG||$msg='error';
 			exit($msg);
 		}
 		static function classLoader($classname){
-			$file=array(
-				'Model'=>APP_FILE.'model/',
-				'Controller'=>APP_FILE.'controller/',
-			);
+			$file=array('Model'=>APP_FILE.'model/','Controller'=>APP_FILE.'controller/');
 			if(!empty(APP::$__module))$file['Controller']=$file['Controller'].APP::$__module.'/';
 			foreach($file as $k=>$v){
 				if(strstr($classname,$k)){
@@ -126,7 +123,7 @@
 	        );
 	        $text = preg_replace($pattern, $replacement, $text);
 	        $basefile=APP_FILE.APP::$config['app']['runtime_file'];
-	        if(!is_dir($basefile))mkdir($basefile,0777);
+	        is_dir($basefile)||mkdir($basefile,0777);
 	        if(!empty($module)&&!is_dir($basefile.$module))mkdir($basefile.$module,0777);
 	        $compliefile = $basefile.$module.md5(basename($tpl,'.html')) . '.php';
 	        if ($fp = @fopen($compliefile, 'w')) {
