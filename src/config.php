@@ -14,7 +14,7 @@
 		),
 		'app'=>array(
 			'view_file'=>'view/',
-			'runtime_file'=>'runtime/chache/'
+			'runtime_file'=>'runtime/'
 		),
 		'url'=>array(
 			'suffix'=>'.html'

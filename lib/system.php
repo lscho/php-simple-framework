@@ -11,7 +11,7 @@
 			APP::route();
 		}
 		static function init(){
-			if(empty(APP::$config)&&file_exists('./config.php')) APP::$config=include './config.php';
+			if(empty(APP::$config)&&file_exists(APP_FILE.'config.php')) APP::$config=include APP_FILE.'config.php';
 		}
 		static function route(){
 			if(!empty(APP::$config['rewrite'])){
