@@ -6,11 +6,13 @@
 		public static $__api;
 		public static $__action;	
 		static function run(){
-			error_reporting(E_ALL || ~E_NOTICE);
 			APP::init();
 			APP::route();
 		}
 		static function init(){
+            error_reporting(E_ALL || ~E_NOTICE);
+            date_default_timezone_set('Asia/Shanghai');
+            session_start();
 			if(empty(APP::$config)&&file_exists(APP_FILE.'config.php')) APP::$config=include APP_FILE.'config.php';
 		}
 		static function route(){

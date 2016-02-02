@@ -1,11 +1,188 @@
-<br>-------------------------上面是baseController输出的<br>
-{include file='head'}
-<br>-------------------------上面是head输出的<br>
-{if $users}
-users's data
-{/if}
-<br>-------------------------上面是判断users是否存在<br>
-{foreach $cate k=>v}
-	{$v.name}
-{/foreach}
-<br>-------------------------上面是foreach循环
+    <!DOCTYPE html>    
+    <html lang="zh-cn">
+      {include file='head'}
+    <body>
+      {include file='nav'}
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="panel">
+              <div class="panel-heading">
+                <ul class="nav nav-secondary">
+                  <li class="active">
+                    <a href="your/nice/url">
+                      全部
+                    </a>
+                  </li>
+                  {foreach $tab k=>v}
+                  <li>
+                    <a href="your/nice/url">
+                      {$v.name}
+                    </a>
+                  </li>
+                  {/foreach}
+                </ul>
+              </div>
+              <div class="panel-body content-table">
+                <div class="list">
+                  <header>
+                    <h3> <i class="icon-list-ul icon-border-circle"></i>
+                      Contents List &nbsp;
+                      <small>26 articles</small>
+                    </h3>
+                  </header>
+                  <section class="items items-hover">
+                    <div class="item">
+                      <div class="item-heading">
+                        <h4>
+                          <span class="label label-success">NEW</span>
+                          &nbsp;
+                          <a href="###">Lorem ipsum dolor sit amet.中文标题测试</a>
+                        </h4>
+                      </div>
+                      <div class="item-content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, necessitatibus, animi magni illo vel ducimus quia dolorum modi temporibus iste fugit laudantium minima minus sit debitis. Autem voluptate dolorum saepe!
+                      </div>
+                      <div class="item-footer">
+                        <a href="#" class="text-muted"> <i class="icon-comments"></i>
+                          243
+                        </a>
+                        &nbsp;
+                        <span class="text-muted">2013-11-11 16:14:37</span>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="item-heading">
+                        <h4>
+                          <a href="###">Lorem ipsum dolor sit amet.中文标题测试</a>
+                        </h4>
+                      </div>
+                      <div class="item-content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, necessitatibus, animi magni illo vel ducimus quia dolorum modi temporibus iste fugit laudantium minima minus sit debitis. Autem voluptate dolorum saepe!
+                      </div>
+                      <div class="item-footer">
+                        <a href="#">
+                          <i class="icon-comments"></i>
+                          243
+                        </a>
+                        &nbsp;
+                        <span class="text-muted">2013-11-11 16:14:37</span>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="item-heading">
+                        <h4>
+                          <a href="###">Lorem ipsum dolor sit amet.中文标题测试</a>
+                        </h4>
+                      </div>
+                      <div class="item-content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, necessitatibus, animi magni illo vel ducimus quia dolorum modi temporibus iste fugit laudantium minima minus sit debitis. Autem voluptate dolorum saepe!
+                      </div>
+                      <div class="item-footer">
+                        <a href="#">
+                          <i class="icon-comments"></i>
+                          243
+                        </a>
+                        &nbsp;
+                        <span class="text-muted">2013-11-11 16:14:37</span>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="item-heading">
+                        <h4>
+                          <a href="###">Lorem ipsum dolor sit amet.中文标题测试</a>
+                        </h4>
+                      </div>
+                      <div class="item-content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, necessitatibus, animi magni illo vel ducimus quia dolorum modi temporibus iste fugit laudantium minima minus sit debitis. Autem voluptate dolorum saepe!
+                      </div>
+                      <div class="item-footer">
+                        <a href="#">
+                          <i class="icon-comments"></i>
+                          243
+                        </a>
+                        &nbsp;
+                        <span class="text-muted">2013-11-11 16:14:37</span>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="item-heading">
+                        <h4>
+                          <a href="###">Lorem ipsum dolor sit amet.中文标题测试</a>
+                        </h4>
+                      </div>
+                      <div class="item-content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, necessitatibus, animi magni illo vel ducimus quia dolorum modi temporibus iste fugit laudantium minima minus sit debitis. Autem voluptate dolorum saepe!
+                      </div>
+                      <div class="item-footer">
+                        <a href="#">
+                          <i class="icon-comments"></i>
+                          243
+                        </a>
+                        &nbsp;
+                        <span class="text-muted">2013-11-11 16:14:37</span>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="item-heading">
+                        <h4>
+                          <a href="###">Lorem ipsum dolor sit amet.中文标题测试</a>
+                        </h4>
+                      </div>
+                      <div class="item-content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, necessitatibus, animi magni illo vel ducimus quia dolorum modi temporibus iste fugit laudantium minima minus sit debitis. Autem voluptate dolorum saepe!
+                      </div>
+                      <div class="item-footer">
+                        <a href="#">
+                          <i class="icon-comments"></i>
+                          243
+                        </a>
+                        &nbsp;
+                        <span class="text-muted">2013-11-11 16:14:37</span>
+                      </div>
+                    </div>
+                  </section>
+                  <footer>
+                    <ul class="pager">
+                      <li class="previous">
+                        <a href="#">« 上一页</a>
+                      </li>
+                      <li>
+                        <a href="#">1</a>
+                      </li>
+                      <li>
+                        <a href="#">⋯</a>
+                      </li>
+                      <li>
+                        <a href="#">6</a>
+                      </li>
+                      <li class="active">
+                        <a href="#">7</a>
+                      </li>
+                      <li>
+                        <a href="#">8</a>
+                      </li>
+                      <li>
+                        <a href="#">9</a>
+                      </li>
+                      <li>
+                        <a href="#">⋯</a>
+                      </li>
+                      <li>
+                        <a href="#">12</a>
+                      </li>
+                      <li class="next">
+                        <a href="#">下一页 »</a>
+                      </li>
+                    </ul>
+                  </footer>
+                </div>
+              </div>
+            </div>
+          </div>
+          {include file='sidebar'}
+        </div>
+      </div>
+      {include file='footer'}
+    </body>
+    </html>
