@@ -1302,12 +1302,3 @@ table.tablesorter thead tr .headerSortDown:after {
 pre {
   border-radius: 0;
 }
-.content-table{
-  padding: 0px;
-}
-.footer{
-  text-align: center;
-}
-.footer a{
-  color: #FFF;
-}

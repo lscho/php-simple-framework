@@ -1,8 +1,23 @@
           <div class="col-md-3">
+
+            {if $es.session['id']}
             <div class="panel">
               <div class="panel-heading">个人信息</div>
-              <div class="panel-body">...</div>
+              <div class="panel-body">
+                
+              </div>
             </div>
+            {else}
+            <div class="panel">
+              <div class="panel-body">
+                <h3 class="">es社区</h3>
+                <div>
+                  <button class="btn btn-primary btn-mini" type="button">登录</button>或
+                  <a class="btn btn-primary btn-mini" href="./register">注册</a>
+                </div>
+              </div>
+            </div>            
+            {/if}
 
             <div class="panel">
               <div class="panel-body">

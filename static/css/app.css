@@ -1,0 +1,16 @@
+.content-table{
+  padding: 0px;
+}
+.footer{
+  text-align: center;
+}
+.footer a{
+  color: #FFF;
+}
+.breadcrumb{
+	margin-bottom: 0px;
+	padding: 5px 15px;
+}
+.form-alert{
+	display: none;
+}

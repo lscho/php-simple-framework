@@ -31,5 +31,12 @@
 			'list'=>'jpg,json,zip,rar',
 			'file'=>'upload/'
 		),
+		'email'=>array(
+			'user'=>'server@eyblog.com',
+			'password'=>'123456.Server',
+			'host'=>'smtp.exmail.qq.com',
+			'port'=>25,
+			'auth'=>false
+		)
 	);
 ?>

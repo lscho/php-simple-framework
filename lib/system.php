@@ -52,10 +52,13 @@
 			APP::$__module=$_GET['m'];
 			APP::$__controller=$_GET['c'];
 			APP::$__action=$_GET['a'];
-			$class=$_GET['c'].'Controller';
-			$action=$_GET['a'].'Action';
-			$obj=new $class;
-			$obj->$action();
+            $obj = new ReflectionClass($_GET['c'].'Controller');
+            if($obj->hasMethod($_GET['a'].'Action')){
+                $instance =$obj->newInstanceArgs();
+                $obj->getmethod($_GET['a'].'Action')->invoke($instance);
+            }else{
+                APP::error($class.' not has Action:'.$_GET['a']);
+            }
 		}
 		static function error($msg){
 			header("Content-Type:text/html;charset=utf8");
@@ -69,14 +72,17 @@
 				if(strstr($classname,$k)){
 					APP::load($v.$classname.'.class.php');
 					break;
-				}
+				}elseif(file_exists(APP_FILE.'use/'.$classname.'.class.php')){
+                    APP::load(APP_FILE.'use/'.$classname.'.class.php');
+                    break;
+                }
 			}
 		}
 		static function load($file){
 			if(file_exists($file)){
 				include $file;
 			}else{
-				APP::error('File not found:'.$flie);
+				APP::error('File not found:'.$file);
 			}
 		}
 	}
@@ -140,6 +146,7 @@
         	$this->vars[$k] = $v;
     	}
 	   function display($tpl=0){
+            $this->vars['es']=array("session"=>$_SESSION,"get"=>$_GET,"post"=>$_POST);
 	   		$module=empty(APP::$__module)?"":APP::$__module.'/';
 	   		$tpl=$tpl?$tpl:APP::$__controller.'_'.APP::$__action;
 	        $tplfile = APP_FILE.APP::$config['app']['view_file'].$module. $tpl.'.html';
