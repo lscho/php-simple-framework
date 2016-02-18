@@ -1,5 +1,5 @@
 <?php
-	class email{
+	class email  extends Uses{
 	    public $smtp_port;
 	    public $time_out;
 	    public $host_name;
@@ -24,12 +24,7 @@
 	        $this->sock = FALSE;
 	        $this->mailtype = "HTML";
 		}
-		//入口
-		function notify($behavior,$data){
-			$behavior=strtolower($behavior);
-			$this->$behavior($data);
-		}
-		function register_email($data){
+		function use_register_email($data){
 			$state = $this->sendmail($data['email'],$this->user, '注册验证码通知', $data['str'],  $this->mailtype);
 			print_r($state);
 		}

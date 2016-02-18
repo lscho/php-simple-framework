@@ -1,9 +1,32 @@
 <?php
-	//登录
+	//注册
 	class registerController extends baseController{
 		function indexAction(){
 			if($this->ispost()){	//处理请求
-				
+				//表单验证
+				$param=array(
+					'mobile'=>'手机号码不能为空',
+					'valicode'=>'验证码不能为空',
+					'nickname'=>'昵称不能为空',
+					'password'=>'密码不能为空',
+				);
+				$isempty=$this->isempty($param);
+				$isempty['err']&&$this->json($isempty['err_msg'],0);
+				//验证码
+				$verif=new verif();
+				$verif->detection($_POST['valicode'])||$this->json("验证码不正确",0);
+				unset($_POST['valicode']);
+				//添加用户
+				$user=new userModel();
+				$rs=$user->add($_POST);
+				if(!empty($rs['err_msg'])){
+					$this->json($rs['err_msg'],0);
+				}else{
+					$data=$_POST;
+					$data['uid']=$rs['uid'];
+					$this->register_use('REGISTER',$data);
+					$this->json('注册成功');
+				}
 			}else{					//渲染模版
 				$this->display();			
 			}

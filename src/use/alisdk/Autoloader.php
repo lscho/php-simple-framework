@@ -13,43 +13,43 @@ class Autoloader{
           $name = strstr($class, '\\', true);
         }
 
-        $filename = __DIR__."/top/".$name.".php";
+        $filename = APP_FILE."use/alisdk/"."/top/".$name.".php";
         if(is_file($filename)) {
             include $filename;
             return;
         }
 
-        $filename = __DIR__."/top/request/".$name.".php";
+        $filename = APP_FILE."use/alisdk/"."/top/request/".$name.".php";
         if(is_file($filename)) {
             include $filename;
             return;
         }
 
-        $filename = __DIR__."/top/domain/".$name.".php";
+        $filename = APP_FILE."use/alisdk/"."/top/domain/".$name.".php";
         if(is_file($filename)) {
             include $filename;
             return;
         }
 
-        $filename = __DIR__."/aliyun/".$name.".php";
+        $filename = APP_FILE."use/alisdk/"."/aliyun/".$name.".php";
         if(is_file($filename)) {
             include $filename;
             return;
         }
 
-        $filename = __DIR__."/aliyun/request/".$name.".php";
+        $filename = APP_FILE."use/alisdk/"."/aliyun/request/".$name.".php";
         if(is_file($filename)) {
             include $filename;
             return;
         }
 
-        $filename = __DIR__."/aliyun/domain/".$name.".php";
+        $filename = APP_FILE."use/alisdk/"."/aliyun/domain/".$name.".php";
         if(is_file($filename)) {
             include $filename;
             return;
-        }         
+        } 
+        echo $filename;       
     }
 }
-
 spl_autoload_register('Autoloader::autoload');
 ?>

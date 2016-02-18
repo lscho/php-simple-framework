@@ -16,6 +16,7 @@
 				$_SESSION['baseinfo']=$base->getinfo();
 			}
 			$this->assign('baseinfo',$_SESSION['baseinfo']);
+			$this->assign('__basefile',BASE_FILE);
 		}
 		//跳转
 		function jump($url){
@@ -25,6 +26,21 @@
 		function json($msg="",$status=1,$url=""){
 			header('Content-type:text/json');
 			die(json_encode(array("msg"=>$msg,"status"=>$status,"url"=>$url)));
+		}
+		//检测参数是否为空
+		function isempty($data=array(),$method='post'){
+			if($method=='post'){
+				$param=$_POST;
+			}elseif($method=='get'){
+				$param=$_GET;
+			}
+			foreach($data as $k=>$v){
+				if(empty($param[$k])){
+					return array('err'=>1,'err_msg'=>$v);
+					break;
+				}
+			}
+			return array('err'=>0,'err_msg'=>"");
 		}
 		function add_use($obj){
 			if(is_array($obj)){

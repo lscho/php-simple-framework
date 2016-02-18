@@ -14,3 +14,7 @@
 .form-alert{
 	display: none;
 }
+.container .panel-heading{
+	border-color: #fff;
+	background-color: #f6f6f6;
+}

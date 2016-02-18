@@ -1,29 +1,29 @@
           <div class="col-md-3">
 
-            {if $es.session['id']}
+            {if $es.session['userInfo']}
             <div class="panel">
               <div class="panel-heading">个人信息</div>
               <div class="panel-body">
                 
               </div>
             </div>
+
+            <div class="panel">
+              <div class="panel-body">
+                <a class="btn btn-block btn-primary" href="{$__basefile}/topic">发布话题</a>
+              </div>
+            </div>            
             {else}
             <div class="panel">
               <div class="panel-body">
                 <h3 class="">es社区</h3>
                 <div>
-                  <button class="btn btn-primary btn-mini" type="button">登录</button>或
-                  <a class="btn btn-primary btn-mini" href="./register">注册</a>
+                  <button class="btn btn-primary btn-mini" type="button" data-remote="./login" data-toggle="modal">登录</button>或
+                  <a class="btn btn-primary btn-mini" href="{$__basefile}/register">注册</a>
                 </div>
               </div>
             </div>            
             {/if}
-
-            <div class="panel">
-              <div class="panel-body">
-                <a class="btn btn-block btn-primary" href="./topic">发布话题</a>
-              </div>
-            </div>
 
             <div class="panel">
               <div class="panel-heading">

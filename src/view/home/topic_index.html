@@ -22,7 +22,7 @@
                       <div class="form-group">
                         <label class="col-md-2 control-label required">板块</label>
                         <div class="col-md-4">
-                          <select name="original" id="original" class="form-control">
+                          <select name="tab" class="form-control">
                             {foreach $tab k=>v}
                             <option value="{$v.id}">/{$v.name}</option>
                             {/foreach}
@@ -45,7 +45,7 @@
 
                       <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                          <input id="post" class="btn btn-primary" value="保存" data-from="#topic" data-loading-text="正在发布..." type="button">    
+                          <input class="btn btn-primary post" value="保存" data-from="#topic" data-loading-text="正在发布..." type="button">    
                           <input name="type" id="type" value="article" type="hidden"></div>
                       </div>
                     </form>

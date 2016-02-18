@@ -1,26 +1,27 @@
 <?php
-	class sms{
-		//入口
-		function notify($behavior,$data){
-			$behavior=strtolower($behavior);
-			$this->$behavior($data);
-		}
-		function register($data){
+	class sms extends Uses{
+		function use_register($data){
 			$param['code']=$data['code'];
 			$param['product']=$_SESSION['baseinfo']['title'];
-			$rs=$this->send($data['mobile'],json_encode($param),'SMS_4940209');
+			$rs=$this->send($data['mobile'],json_encode($param),'SMS_4940209',"注册验证");
+			if($rs){
+				die(json_encode(array("msg"=>'发送成功',"status"=>1)));
+			}else{
+				die(json_encode(array("msg"=>'发送失败',"status"=>0)));
+			}
 		}
-		function send($mobile,$data,$template){
-			include APP_FILE."src/use/TopSdk.php";
+		function send($mobile,$data,$template,$sign){
+			$a=include APP_FILE."use/alisdk/TopSdk.php";
 			$c = new TopClient;
-			$c->appkey = $appkey;
-			$c->secretKey = $secret;
+			$c->appkey = "23310798";
+			$c->secretKey = "754cbdbd9aeff8f64077d522420fc3cb";
 			$req = new AlibabaAliqinFcSmsNumSendRequest;
 			$req->setSmsType("normal");
-			$req->setSmsFreeSignName("注册验证");	//短信签名
-			$req->setSmsParam("{\"code\":\"1234\",\"product\":\"阿里大鱼\",\"item\":\"阿里大鱼\"}");
+			$req->setSmsFreeSignName($sign);	//短信签名
+			$req->setSmsParam($data);
 			$req->setRecNum($mobile);
 			$req->setSmsTemplateCode($template);
-			$resp = $c->execute($req);
+			$resp = (array)$c->execute($req);
+			return $resp['result']['err_code']==0;
 		}
 	}
