@@ -4,13 +4,18 @@ $(function(){
 		var self=$(this);
 		self.button('loading');
 		var url=$(self.data('from')).attr('action');
+		var data={};
 		$(self.data('from')).find('input').each(function(){
-			alert($(this).val());
+			if($(this).attr('name')){
+				data[$(this).attr('name')]=$(this).val();
+			}
 		});
-		$.post(url,{
-			title:$("input[name='title']").val(),
-			content:$("input[name='content']").val()
-		},function(rs){
+		$(self.data('from')).find('textarea').each(function(){
+			if($(this).attr('name')){
+				data[$(this).attr('name')]=$(this).val();
+			}			
+		});
+		$.post(url,data,function(rs){
 			var option={placement:"center"};
 			option.type=(rs.status==1)?"success":"danger";
 			var msg = $.zui.messager.show(rs.msg, option);
@@ -39,17 +44,27 @@ $(function(){
 		}
 	});
 	//邮件发送
-	$("#sendmail").on('click',function(){
+	$("#send").on('click',function(){
 		var self=$(this);
-		var email=$("#email").val();
-		var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-		if(!reg.test(email)) {
-			var msg = $.zui.messager.show("请输入有效的邮箱地址！", {placement:"center",type:"danger"});
-			return false;
+		var value=$(self.data('for')).val();
+		if(self.data('send')=='sms'){
+			var reg=/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/i;
+			if(!reg.test(value)) {
+				var msg = $.zui.messager.show("请输入有效的手机号码！", {placement:"center",type:"danger"});
+				return false;
+			}else{
+				var data={mobile:value};
+			}
+		}else if(self.data('send')=='email'){
+			var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+			if(!reg.test(value)) {
+				var msg = $.zui.messager.show("请输入有效的邮箱地址！", {placement:"center",type:"danger"});
+				return false;
+			}else{
+				var data={email:value};
+			}
 		}
-		$.post(self.data('url'),{
-			email:email
-		},function(rs){
+		$.post(self.data('url'),data,function(rs){
 			var option={placement:"center"};
 			option.type=(rs.status==1)?"success":"danger";
 			var msg = $.zui.messager.show(rs.msg, option);			

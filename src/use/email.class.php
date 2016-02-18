@@ -12,7 +12,7 @@
 	    public $sock;
 		function __construct(){
 			$config=APP::$config;
-	        $this->debug = FALSE;
+	        $this->debug = 1;
 	        $this->smtp_port = $config['email']['port'];
 	        $this->relay_host = $config['email']['host'];
 	        $this->time_out = 30;
@@ -22,9 +22,16 @@
 	        $this->host_name = "localhost";
 	        $this->log_file = "";
 	        $this->sock = FALSE;
+	        $this->mailtype = "HTML";
 		}
+		//入口
 		function notify($behavior,$data){
-			
+			$behavior=strtolower($behavior);
+			$this->$behavior($data);
+		}
+		function register_email($data){
+			$state = $this->sendmail($data['email'],$this->user, '注册验证码通知', $data['str'],  $this->mailtype);
+			print_r($state);
 		}
 	    function sendmail($to, $from, $subject = "", $body = "", $mailtype, $cc = "", $bcc = "", $additional_headers = "") {
 	        $mail_from = $this->get_address($this->strip_comment($from));
