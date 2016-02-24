@@ -26,7 +26,6 @@
 		}
 		function use_register_email($data){
 			$state = $this->sendmail($data['email'],$this->user, '注册验证码通知', $data['str'],  $this->mailtype);
-			print_r($state);
 		}
 	    function sendmail($to, $from, $subject = "", $body = "", $mailtype, $cc = "", $bcc = "", $additional_headers = "") {
 	        $mail_from = $this->get_address($this->strip_comment($from));

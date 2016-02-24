@@ -28,6 +28,7 @@
 					$this->json('注册成功');
 				}
 			}else{					//渲染模版
+				empty($_SESSION['userInfo'])||$this->jump(BASE_FILE.'/');		
 				$this->display();			
 			}
 		}
@@ -50,7 +51,13 @@
 			$verif=new verif();
 			$data['mobile']=$_POST['mobile'];
 			$data['code']=$verif->generate();
-			$this->add_use(new sms());
-			$this->register_use('REGISTER',$data);					
+			$sms=new sms();
+			$rs=$sms->use_register($data);
+			if($rs){
+				$this->register_use('REGISTER_SEND_SMS',$data);
+				$this->json('发送成功');
+			}else{
+				$this->json('发送失败');
+			}							
 		}
 	}

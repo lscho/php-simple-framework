@@ -10,10 +10,11 @@
 			APP::route();
 		}
 		static function init(){
-            define('BASE_FILE','/'.basename(dirname($_SERVER['SCRIPT_FILENAME'])));
+            header("Content-Type:text/html;charset=utf8");
             error_reporting(E_ALL || ~E_NOTICE);
             date_default_timezone_set('Asia/Shanghai');
             session_start();
+            define('BASE_FILE','/'.basename(dirname($_SERVER['SCRIPT_FILENAME'])));
 			if(empty(APP::$config)&&file_exists(APP_FILE.'config.php')) APP::$config=include APP_FILE.'config.php';
 		}
 		static function route(){
@@ -62,7 +63,6 @@
             }
 		}
 		static function error($msg){
-			header("Content-Type:text/html;charset=utf8");
 			APP_DEBUG||$msg='error';
 			exit($msg);
 		}
@@ -97,6 +97,14 @@
 			$this->table=$table;
 			return $this;
 		}
+        function page($count,$p=1,$total=10){
+            $data=array(
+                'total'=>$count,
+                'nowPage'=>$p,
+                'totalPage'=>ceil($count/$total)
+            );
+            return array('limit'=>array(($p-1)*$total,$p*$total),'data'=>$data);            
+        }
 	}
 	class View{
 	    function parse($tpl,$module=""){
@@ -159,6 +167,20 @@
 	        }
 	        include_once($compliefile);
 	    }
+        function register_use($behavior,$data){
+            $handle=opendir(APP_FILE.'use/');
+            while($file=readdir($handle)) {
+                if (($file!=".")&&($file!="..")&&strstr($file,'.class.php')){
+                    $classname=str_replace('.class.php','',$file);
+                    $obj = new ReflectionClass($classname);
+                    if($obj->hasMethod('notify')){
+                        $instance =$obj->newInstanceArgs();
+                        $obj->getmethod('notify')->invoke($instance,array('behavior'=>$behavior,'data'=>$data));
+                    }
+                }
+            }
+            closedir($handle);
+        }
 	    function __call($method,$arg){
 	    	if(in_array(strtolower($method),array('ispost','isget','ishead','isdelete','isput'))){
 	    		return strtolower($_SERVER['REQUEST_METHOD']) == strtolower(substr($method,2));
@@ -166,14 +188,12 @@
 	    }
 	}
     class Uses{
-        function notify($behavior,$data){
-            $behavior='use_'.strtolower($behavior);
-            if(method_exists($this,$behavior)==false){
-                APP::error('No existing method:'.$behavior);
-            }else{
-                $this->$behavior($data);
+        function notify($data){
+            $behavior='use_'.strtolower($data['behavior']);
+            if(method_exists($this,$behavior)==true){
+                $this->$behavior($data['data']);
             }
-        }        
+        }
     }
     class db {
         protected $database_type;

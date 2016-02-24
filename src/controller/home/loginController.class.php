@@ -25,6 +25,7 @@
 					$this->json('登录成功',1);
 				}
 			}else{					//渲染模版
+				empty($_SESSION['userInfo'])||$this->jump(BASE_FILE.'/');
 				$this->display();
 			}
 		}

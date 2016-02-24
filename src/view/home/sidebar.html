@@ -18,8 +18,9 @@
               <div class="panel-body">
                 <h3 class="">es社区</h3>
                 <div>
-                  <button class="btn btn-primary btn-mini" type="button" data-remote="./login" data-toggle="modal">登录</button>或
-                  <a class="btn btn-primary btn-mini" href="{$__basefile}/register">注册</a>
+                  <a data-remote="{$__basefile}/login" data-toggle="modal" href="javascript:">登录</a>
+                  或
+                  <a href="{$__basefile}/register">注册</a>
                 </div>
               </div>
             </div>            
@@ -31,22 +32,11 @@
                 最新话题
               </div>
               <ul class="list-group">
+              {foreach $newTopic k=>v}
                 <li class="list-group-item">
-                  <a href="#">项目</a>
+                  <a href="{$__basefile}/topic/read/sign/{$v['sign']}" title="{$v['title']}">{$v['title']}</a>
                 </li>
-                <li class="list-group-item">
-                  <a href="#">待办</a>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">需求</a>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">任务</a>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">Bug</a>
-                </li>
-                <li class="list-group-item">用例</li>
+                {/foreach}
               </ul>
             </div>
 

@@ -1,0 +1,131 @@
+  <!DOCTYPE html>    
+    <html lang="zh-cn">
+      {include file='head'}
+    <body>
+      {include file='nav'}
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="panel">
+              <div class="panel-heading">
+                <ol class="breadcrumb">
+                  <li>
+                    <a href="{$__basefile}/">主页</a>
+                  </li>
+                  <li class="active">主题详情</li>
+                </ol>
+              </div>
+              <div class="panel-body">
+
+                {if !$info}
+                <div class="alert alert-danger with-icon">
+                  <i class="icon-remove-sign"></i>
+                  <div class="content">
+                    <p>此主题不存在或已被删除</p>
+                    <a href="{$__basefile}/">返回首页</a>
+                  </div>
+                </div>                
+                {else}
+                <article class="article">
+                  <header>
+                    <h1 class="text-center">{$info['title']}</h1>
+                    <dl class="dl-inline">
+                      <p class="pull-right text-muted">发布时间：{$info['post_time']} &nbsp;点击数：{$info['view']}</p>
+                      <p class="text-important">
+                        本文版权所有归
+                        <a href="###">@{$info['nickname']}</a>
+                      </p>
+                    </dl>
+                  </header>
+                  <section class="article-content">{$info['content']}</section>
+                </article>
+
+                <article id="comment">
+                  <div class="example">
+                    <div class="comments">
+                      <header>
+                        <div class="pull-right">
+                          <a href="#commentReplyForm" class="btn btn-info"> <i class="icon-comment-alt"></i>
+                            发表评论
+                          </a>
+                        </div>
+                        <h3> <i class="icon-comments icon-border-circle"></i>
+                          26 comments
+                        </h3>
+                      </header>
+                      <section class="comments-list">
+                        {foreach $comment['list'] k=>v}
+                        <div class="comment">
+                          <a href="###" class="avatar">
+                            <i class="icon-user icon-border icon-2x icon-muted"></i>
+                          </a>
+                          <div class="content">
+                            <div class="pull-right">
+                              <span class="text-muted" title="2013-11-08 15:52:32">2 hours ago</span>
+                              &nbsp;
+                            </div>
+                            <span class="author">
+                              <a href="#"> <strong>{$v['nickname']}</strong>
+                              </a>
+                              <span class="text-muted" style="display: none;">replied to</span>
+                              <a href="#" style="display: none;">Zhang Li</a>
+                            </span>
+
+                            <div class="text">{$v['comment']}</div>
+                            {if $es.session['uid']}
+                            <div class="actions">
+                              <a href="##">回复</a>
+                              {if $es.session['uid']==$v['uid']}
+                              <a href="##">编辑</a>
+                              <a href="##">删除</a>
+                              {/if}
+                            </div>
+                            {/if}
+                          </div>
+                        </div>
+                        {/foreach}
+                      </section>
+                      <footer>
+                        <div class="reply-form" id="commentReplyForm">
+                          <a href="###" class="avatar">
+                            <i class="icon-user icon-border icon-2x icon-muted"></i>
+                          </a>
+                          <div class="form">
+                            <form id="comment_form" role="form" action="{$__basefile}/comment">
+                              <input name="_reply" value="{$info._reply}" type="hidden" />    
+                              <div class="form-group">
+                                <textarea name="reply" class="form-control new-comment-text" rows="2" placeholder="write a comment..."></textarea>
+                              </div>
+                              <div class="form-group comment-user">
+                                <div class="row">
+                                  <div class="col-md-10"></div>
+                                  <div class="col-md-2">
+                                    {if $es.session['userInfo']}
+                                    <button type="button" class="btn btn-block btn-primary post" data-from="#comment_form">
+                                      <i class="icon-ok"></i>
+                                    </button>
+                                    {else}
+                                    <a data-remote="{$__basefile}/login" data-toggle="modal" href="javascript:">登录</a>
+                                    或
+                                    <a href="{$__basefile}/register">注册</a>
+                                    {/if}
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </footer>
+                    </div>
+                  </div>
+                </article>
+                {/if}
+              </div>
+            </div>
+          </div>
+          {include file='sidebar'}
+        </div>
+      </div>
+      {include file='footer'}
+    </body>
+    </html>]

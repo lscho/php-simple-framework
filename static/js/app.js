@@ -92,6 +92,11 @@ function ajaxform(self) {
 			data[$(this).attr('name')] = $(this).val();
 		}
 	});
+	$(self.data('from')).find('select').each(function() {
+		if ($(this).attr('name')) {
+			data[$(this).attr('name')] = $(this).val();
+		}
+	});	
 	self.button('loading');
 	$.post(url, data, function(rs) {
 		if (rs.status == 1) {

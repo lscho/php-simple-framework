@@ -1,7 +1,6 @@
 <?php
 	//控制器基类
 	class baseController extends Controller{
-		public $_use=array();
 		//常用数据可以使用radis优化
 		function __construct(){
 			//获取标签列表
@@ -12,11 +11,15 @@
 			$this->assign('tab',$_SESSION['tab']);
 			//获取基础信息
 			if(empty($_SESSION['baseinfo'])){
-				$base=new BaseModel();
+				$base=new baseModel();
 				$_SESSION['baseinfo']=$base->getinfo();
 			}
 			$this->assign('baseinfo',$_SESSION['baseinfo']);
 			$this->assign('__basefile',BASE_FILE);
+			//获取最新文章
+			$topic=new topicModel();
+			$newTopic=$topic->getNew();
+			$this->assign('newTopic',$newTopic);			
 		}
 		//跳转
 		function jump($url){
@@ -41,17 +44,5 @@
 				}
 			}
 			return array('err'=>0,'err_msg'=>"");
-		}
-		function add_use($obj){
-			if(is_array($obj)){
-				$this->_use=array_merge($this->_use,$obj);
-			}else{
-				$this->_use[]=$obj;
-			}
-		}
-		function register_use($behavior,$data){
-			foreach ($this->_use as $v) {
-				$v->notify($behavior,$data);
-			}
 		}
 	}

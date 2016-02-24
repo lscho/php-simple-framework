@@ -4,11 +4,7 @@
 			$param['code']=$data['code'];
 			$param['product']=$_SESSION['baseinfo']['title'];
 			$rs=$this->send($data['mobile'],json_encode($param),'SMS_4940209',"注册验证");
-			if($rs){
-				die(json_encode(array("msg"=>'发送成功',"status"=>1)));
-			}else{
-				die(json_encode(array("msg"=>'发送失败',"status"=>0)));
-			}
+			return $rs;
 		}
 		function send($mobile,$data,$template,$sign){
 			$a=include APP_FILE."use/alisdk/TopSdk.php";
