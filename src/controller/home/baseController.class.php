@@ -16,6 +16,15 @@
 			}
 			$this->assign('baseinfo',$_SESSION['baseinfo']);
 			$this->assign('__basefile',BASE_FILE);
+			//获取网站配置
+			if(empty($_SESSION['web_config'])){
+				$_SESSION['web_config']=array(
+					'point'=>array(
+						'post'=>10,
+						'reply'=>5
+					)
+				);
+			}
 			//获取最新文章
 			$topic=new topicModel();
 			$newTopic=$topic->getNew();

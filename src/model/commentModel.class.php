@@ -19,6 +19,7 @@
 		    $map['ORDER']='es_comment.id DESC';
 		    $map['LIMIT']=$page['limit'];
 		    $list=$this->select($join,$field,$map);
+		    $data['count']=$count;
 		    $data['list']=$list;
 		    $data['page']=$page['data'];
 		    return $data;		    		    

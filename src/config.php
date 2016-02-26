@@ -14,15 +14,15 @@
 		),
 		'app'=>array(
 			'view_file'=>'view/',
-			'runtime_file'=>'runtime/'
+			'runtime_file'=>'runtime/',
+			'base_file'=>'/test'
 		),
 		'url'=>array(
 			'suffix'=>'.html'
 		),
 		'rewrite' => array(
-			'admin/<c>/<a>.html'    => 'admin/<c>/<a>', 
+			'admin/<c>/<a>'    		=> 'admin/<c>/<a>', 
 			'<c>/<a>'          		=> '<c>/<a>',
-			'<c>/'          		=> '<c>/index',
 			'<c>'          			=> '<c>/index',
 			'/'                		=> 'main/index',
 		),

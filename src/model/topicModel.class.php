@@ -39,9 +39,4 @@
 			$rs=$this->update(array("view[+]" => 1),array('sign'=>$sign));
 			return $rs;
 		}
-		//回复数量+1
-		function setReply($sign,$nums=0){
-			$rs=$this->update(array("reply" => $nums),array('sign'=>$sign));
-			return $rs;			
-		}
 	}

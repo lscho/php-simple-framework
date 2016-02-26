@@ -14,8 +14,8 @@
             error_reporting(E_ALL || ~E_NOTICE);
             date_default_timezone_set('Asia/Shanghai');
             session_start();
-            define('BASE_FILE','/'.basename(dirname($_SERVER['SCRIPT_FILENAME'])));
 			if(empty(APP::$config)&&file_exists(APP_FILE.'config.php')) APP::$config=include APP_FILE.'config.php';
+            define('BASE_FILE',empty(APP::$config['app']['base_file'])?"":APP::$config['app']['base_file']);
 		}
 		static function route(){
 			if(!empty(APP::$config['rewrite'])){
@@ -67,16 +67,9 @@
 			exit($msg);
 		}
 		static function classLoader($classname){
-			$file=array('Model'=>APP_FILE.'model/','Controller'=>APP_FILE.'controller/');
-			if(!empty(APP::$__module))$file['Controller']=$file['Controller'].APP::$__module.'/';
+			$file=array('model/','controller/'.APP::$__module.'/','use/');
 			foreach($file as $k=>$v){
-				if(strstr($classname,$k)){
-					APP::load($v.$classname.'.class.php');
-					break;
-				}elseif(file_exists(APP_FILE.'use/'.$classname.'.class.php')){
-                    APP::load(APP_FILE.'use/'.$classname.'.class.php');
-                    break;
-                }
+                if(file_exists(APP_FILE.$v.$classname.'.class.php'))include APP_FILE.$v.$classname.'.class.php';
 			}
 		}
 		static function load($file){
@@ -98,11 +91,7 @@
 			return $this;
 		}
         function page($count,$p=1,$total=10){
-            $data=array(
-                'total'=>$count,
-                'nowPage'=>$p,
-                'totalPage'=>ceil($count/$total)
-            );
+            $data=array('total'=>$count,'nowPage'=>$p,'totalPage'=>ceil($count/$total));
             return array('limit'=>array(($p-1)*$total,$p*$total),'data'=>$data);            
         }
 	}

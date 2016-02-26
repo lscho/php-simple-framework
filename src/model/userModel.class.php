@@ -30,4 +30,9 @@
 			}
 			return array('err_msg'=>$err_msg,'userInfo'=>$userInfo);
 		}
+		//增加积分
+		function setPoint($uid,$point=0){
+			$rs=$this->update(array("reply[+]" => $point),array('uid'=>$uid));
+			return $rs;	
+		}
 	}
