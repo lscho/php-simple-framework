@@ -21,6 +21,7 @@
 			'suffix'=>'.html'
 		),
 		'rewrite' => array(
+			't/<sign>'				=>'topic/read',
 			'admin/<c>/<a>'    		=> 'admin/<c>/<a>', 
 			'<c>/<a>'          		=> '<c>/<a>',
 			'<c>'          			=> '<c>/index',

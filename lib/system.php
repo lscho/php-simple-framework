@@ -1,10 +1,6 @@
 <?php
 	class APP{
-		public static $config;
-		public static $__module;
-		public static $__controller;
-		public static $__api;
-		public static $__action;	
+		public static $config,$__module,$__controller,$__api,$__action;	
 		static function run(){
 			APP::init();
 			APP::route();
@@ -38,15 +34,6 @@
 							if(!is_int($matchkey))$_GET[$matchkey] = $matchval;
 						}
 						break;
-					}
-				}
-				$parameter=str_replace($matchs[0],"",rtrim($_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],APP::$config['url']['suffix']));
-				$parames=explode('/',$parameter);
-				if($_GET['c']==APP::$config['api']['file']&&isset($parames[1])){
-					$_GET['id']=$parames[1];
-				}else{
-					for ($i=1; $i <count($parames) ; $i=$i+2) { 
-						if(!empty($parames[$i]))$_GET[$parames[$i]]=$parames[$i+1];
 					}
 				}
 			}
@@ -179,26 +166,11 @@
     class Uses{
         function notify($data){
             $behavior='use_'.strtolower($data['behavior']);
-            if(method_exists($this,$behavior)==true){
-                $this->$behavior($data['data']);
-            }
+            if(method_exists($this,$behavior))$this->$behavior($data['data']);
         }
     }
     class db {
-        protected $database_type;
-        protected $charset;
-        protected $database_name;
-        protected $server;
-        protected $username;
-        protected $password;
-        protected $database_file;
-        protected $socket;
-        protected $port;
-        protected $prefix;
-        protected $option = array();
-        protected $logs = array();
-        protected $debug_mode = false;
-        protected $table;
+        protected $database_type,$charset,$database_name,$server,$username,$password,$database_file,$socket,$port,$prefix,$table,$option = array(),$logs = array(),$debug_mode = false;
         public function __construct($options = null) {
             try {
                 $commands = array();

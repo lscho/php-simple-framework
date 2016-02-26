@@ -34,7 +34,7 @@
               <ul class="list-group">
               {foreach $newTopic k=>v}
                 <li class="list-group-item">
-                  <a href="{$__basefile}/topic/read/sign/{$v['sign']}" title="{$v['title']}">{$v['title']}</a>
+                  <a href="{$__basefile}/t/{$v['sign']}" title="{$v['title']}">{$v['title']}</a>
                 </li>
                 {/foreach}
               </ul>
