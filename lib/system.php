@@ -125,8 +125,7 @@
 	    }
 	}
 	class Controller{
-		private $_v;
-		private $vars = array();
+		private $_v,$vars = array();
 		function assign($k,$v =null){
         	$this->vars[$k] = $v;
     	}
@@ -310,20 +309,16 @@
                                 case 'NULL':
                                     $wheres[] = $column . ' IS NOT NULL';
                                     break;
-
                                 case 'array':
                                     $wheres[] = $column . ' NOT IN (' . $this->array_quote($value) . ')';
                                     break;
-
                                 case 'integer':
                                 case 'double':
                                     $wheres[] = $column . ' != ' . $value;
                                     break;
-
                                 case 'boolean':
                                     $wheres[] = $column . ' != ' . ($value ? '1' : '0');
                                     break;
-
                                 case 'string':
                                     $wheres[] = $column . ' != ' . $this->fn_quote($key, $value);
                                     break;
@@ -358,12 +353,7 @@
                                 $wheres[] = implode(' OR ', $like_clauses);
                             }
                         }
-                        if (in_array($operator, array(
-                            '>',
-                            '>=',
-                            '<',
-                            '<='
-                        ))) {
+                        if (in_array($operator, array('>','>=','<','<='))) {
                             if (is_numeric($value)) {
                                 $wheres[] = $column . ' ' . $operator . ' ' . $value;
                             } elseif (strpos($key, '#') === 0) {
@@ -377,20 +367,16 @@
                             case 'NULL':
                                 $wheres[] = $column . ' IS NULL';
                                 break;
-
                             case 'array':
                                 $wheres[] = $column . ' IN (' . $this->array_quote($value) . ')';
                                 break;
-
                             case 'integer':
                             case 'double':
                                 $wheres[] = $column . ' = ' . $value;
                                 break;
-
                             case 'boolean':
                                 $wheres[] = $column . ' = ' . ($value ? '1' : '0');
                                 break;
-
                             case 'string':
                                 $wheres[] = $column . ' = ' . $this->fn_quote($key, $value);
                                 break;
@@ -474,12 +460,7 @@
             $join_key = is_array($join) ? array_keys($join) : null;
             if (isset($join_key[0]) && strpos($join_key[0], '[') === 0) {
                 $table_join = array();
-                $join_array = array(
-                    '>' => 'LEFT',
-                    '<' => 'RIGHT',
-                    '<>' => 'FULL',
-                    '><' => 'INNER'
-                );
+                $join_array = array('>' => 'LEFT','<' => 'RIGHT','<>' => 'FULL','><' => 'INNER');
                 foreach ($join as $sub_table => $relation) {
                     preg_match('/(\[(\<|\>|\>\<|\<\>)\])?([a-zA-Z0-9_\-]*)\s?(\(([a-zA-Z0-9_\-]*)\))?/', $sub_table, $match);
                     if ($match[2] != '' && $match[3] != '') {
@@ -487,7 +468,6 @@
                             $relation = 'USING ("' . $relation . '")';
                         }
                         if (is_array($relation)) {
-                            // For ['column1', 'column2']
                             if (isset($relation[0])) {
                                 $relation = 'USING ("' . implode($relation, '", "') . '")';
                             } else {
@@ -594,16 +574,13 @@
                         case 'NULL':
                             $fields[] = $column . ' = NULL';
                             break;
-
                         case 'array':
                             preg_match("/\(JSON\)\s*([\w]+)/i", $key, $column_match);
                             $fields[] = $column . ' = ' . $this->quote(isset($column_match[0]) ? json_encode($value) : serialize($value));
                             break;
-
                         case 'boolean':
                             $fields[] = $column . ' = ' . ($value ? '1' : '0');
                             break;
-
                         case 'integer':
                         case 'double':
                         case 'string':

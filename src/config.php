@@ -17,9 +17,6 @@
 			'runtime_file'=>'runtime/',
 			'base_file'=>'/test'
 		),
-		'url'=>array(
-			'suffix'=>'.html'
-		),
 		'rewrite' => array(
 			't/<sign>'				=>'topic/read',
 			'admin/<c>/<a>'    		=> 'admin/<c>/<a>', 
