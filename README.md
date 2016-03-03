@@ -25,7 +25,7 @@
 **路由**
   
   ```php
-        if(!empty(APP::$config['rewrite'])){
+      if(!empty(APP::$config['rewrite'])){
         if( ($pos = strpos( $_SERVER['REQUEST_URI'], '?' )) !== false )
           parse_str( substr( $_SERVER['REQUEST_URI'], $pos + 1 ), $_GET );
         foreach(APP::$config['rewrite'] as $rule => $mapper){
@@ -47,15 +47,17 @@
             break;
           }
         }
-        $parameter=str_replace($matchs[0],"",rtrim($_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],APP::$config['url']['suffix']));
-        $parames=explode('/',$parameter);
-        if($_GET['c']==APP::$config['api']['file']&&isset($parames[1])){
-          $_GET['id']=$parames[1];
-        }else{
-          for ($i=1; $i <count($parames) ; $i=$i+2) { 
-            if(!empty($parames[$i]))$_GET[$parames[$i]]=$parames[$i+1];
-          }
-        }
+      }
+      $_GET['m']=!empty($_GET['m'])?$_GET['m']:'home';
+      APP::$__module=$_GET['m'];
+      APP::$__controller=$_GET['c'];
+      APP::$__action=$_GET['a'];
+            $obj = new ReflectionClass($_GET['c'].'Controller');
+            if($obj->hasMethod($_GET['a'].'Action')){
+                $instance =$obj->newInstanceArgs();
+                $obj->getmethod($_GET['a'].'Action')->invoke($instance);
+            }else{
+                APP::error($class.' not has Action:'.$_GET['a']);
       }
   ```
 
@@ -89,7 +91,16 @@
       }
   }
 ```
-
+  配置伪静态
+```php
+    'rewrite' => array(
+      't/<sign>'        =>'topic/read',
+      'admin/<c>/<a>'       => 'admin/<c>/<a>', 
+      '<c>/<a>'             => '<c>/<a>',
+      '<c>'               => '<c>/index',
+      '/'                   => 'main/index',
+    ),
+```
 **模型**
 
   模型层基于 [medoo](http://medoo.in/),在 medoo 的基础上进行修改，实现了模型与数据库表的自动绑定。下面是一个多表联查的实例
