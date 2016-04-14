@@ -114,7 +114,7 @@
 	            '<?php if (count((array)\$\1)) foreach((array)\$\1 as \$this->vars[\'\2\']=>$this->vars[\'\3\']) {?>'
 	        );
 	        $text = preg_replace($pattern, $replacement, $text);
-	        $basefile=APP_FILE.APP::$config['app']['runtime_file'];
+	        $basefile=APP_FILE.APP::$config['app']['runtime_file'].'chache/';
 	        is_dir($basefile)||mkdir($basefile,0777);
 	        if(!empty($module)&&!is_dir($basefile.$module))mkdir($basefile.$module,0777);
 	        $compliefile = $basefile.$module.md5(basename($tpl,'.html')) . '.php';
@@ -135,7 +135,7 @@
 	   		$tpl=$tpl?$tpl:APP::$__controller.'_'.APP::$__action;
 	        $tplfile = APP_FILE.APP::$config['app']['view_file'].$module. $tpl.'.html';
 	        if (!file_exists($tplfile)) APP::error('can not load template file : ' . $tplfile);
-	        $compliefile = APP_FILE.APP::$config['app']['runtime_file'].$module.md5($tpl).'.php';	//缓存文件
+	        $compliefile = APP_FILE.APP::$config['app']['runtime_file'].'chache/'.$module.md5($tpl).'.php';	
 	        if (!file_exists($compliefile) || filemtime($tplfile) > filemtime($compliefile)) {
 	        	$_v=new View();
 	            $_v->parse($tplfile,$module);
