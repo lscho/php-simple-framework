@@ -1,5 +1,5 @@
 <?php
-	class point  extends Uses{
+	class point{
         function notify($data){
             $behavior=strtolower($data['behavior']);
             switch ($behavior) {

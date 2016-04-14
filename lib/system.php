@@ -54,7 +54,7 @@
 			exit($msg);
 		}
 		static function classLoader($classname){
-			$file=array('model/','controller/'.APP::$__module.'/','use/');
+			$file=array('model/','controller/'.APP::$__module.'/');
 			foreach($file as $k=>$v){
                 if(file_exists(APP_FILE.$v.$classname.'.class.php'))include APP_FILE.$v.$classname.'.class.php';
 			}
@@ -142,32 +142,12 @@
 	        }
 	        include_once($compliefile);
 	    }
-        function register_use($behavior,$data){
-            $handle=opendir(APP_FILE.'use/');
-            while($file=readdir($handle)) {
-                if (($file!=".")&&($file!="..")&&strstr($file,'.class.php')){
-                    $classname=str_replace('.class.php','',$file);
-                    $obj = new ReflectionClass($classname);
-                    if($obj->hasMethod('notify')){
-                        $instance =$obj->newInstanceArgs();
-                        $obj->getmethod('notify')->invoke($instance,array('behavior'=>$behavior,'data'=>$data));
-                    }
-                }
-            }
-            closedir($handle);
-        }
 	    function __call($method,$arg){
 	    	if(in_array(strtolower($method),array('ispost','isget','ishead','isdelete','isput'))){
 	    		return strtolower($_SERVER['REQUEST_METHOD']) == strtolower(substr($method,2));
 	    	}
 	    }
 	}
-    class Uses{
-        function notify($data){
-            $behavior='use_'.strtolower($data['behavior']);
-            if(method_exists($this,$behavior))$this->$behavior($data['data']);
-        }
-    }
     class db {
         protected $database_type,$charset,$database_name,$server,$username,$password,$database_file,$socket,$port,$prefix,$table,$option = array(),$logs = array(),$debug_mode = false;
         public function __construct($options = null) {

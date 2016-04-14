@@ -1,5 +1,5 @@
 <?php
-	class email  extends Uses{
+	class email{
 	    public $smtp_port;
 	    public $time_out;
 	    public $host_name;
@@ -10,6 +10,10 @@
 	    public $user;
 	    public $pass;
 	    public $sock;
+        function notify($data){
+            $behavior='use_'.strtolower($data['behavior']);
+            if(method_exists($this,$behavior))$this->$behavior($data['data']);
+        }	    
 		function __construct(){
 			$config=APP::$config;
 	        $this->debug = 1;
@@ -23,6 +27,9 @@
 	        $this->log_file = "";
 	        $this->sock = FALSE;
 	        $this->mailtype = "HTML";
+		}
+		function use_get_index($rs){
+			echo $rs;
 		}
 		function use_register_email($data){
 			$state = $this->sendmail($data['email'],$this->user, '注册验证码通知', $data['str'],  $this->mailtype);

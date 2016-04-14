@@ -54,4 +54,20 @@
 			}
 			return array('err'=>0,'err_msg'=>"");
 		}
+		//插件机制
+        function register_use($behavior,$data){
+            $handle=opendir(APP_FILE.'use/');
+            while($file=readdir($handle)) {
+                if (($file!=".")&&($file!="..")&&strstr($file,'.class.php')){
+                    $classname=str_replace('.class.php','',$file);
+                    include APP_FILE.'use/'.$file;
+                    $obj = new ReflectionClass($classname);
+                    if($obj->hasMethod('notify')){
+                        $instance =$obj->newInstanceArgs();
+                        $obj->getmethod('notify')->invoke($instance,array('behavior'=>$behavior,'data'=>$data));
+                    }
+                }
+            }
+            closedir($handle);
+        }		
 	}

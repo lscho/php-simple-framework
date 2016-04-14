@@ -9,6 +9,10 @@
 			$this->length=$length;
 			$this->is_int=$is_int;
 		}
+        function notify($data){
+            $behavior='use_'.strtolower($data['behavior']);
+            if(method_exists($this,$behavior))$this->$behavior($data['data']);
+        }		
 		/**
 		* 生成方法
 		* generate(time：时间[s])

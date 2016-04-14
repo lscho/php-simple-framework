@@ -1,5 +1,9 @@
 <?php
-	class sms extends Uses{
+	class sms{
+        function notify($data){
+            $behavior='use_'.strtolower($data['behavior']);
+            if(method_exists($this,$behavior))$this->$behavior($data['data']);
+        }		
 		function use_register($data){
 			$param['code']=$data['code'];
 			$param['product']=$_SESSION['baseinfo']['title'];
