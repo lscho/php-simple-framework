@@ -5,16 +5,16 @@
 			if($this->ispost()){	//处理请求
 				//表单验证
 				$param=array(
-					'mobile'=>'手机号码不能为空',
-					'valicode'=>'验证码不能为空',
+					//'mobile'=>'手机号码不能为空',
+					//'valicode'=>'验证码不能为空',
 					'nickname'=>'昵称不能为空',
 					'password'=>'密码不能为空',
 				);
 				$isempty=$this->isempty($param);
 				$isempty['err']&&$this->json($isempty['err_msg'],0);
 				//验证码
-				$verif=new verif();
-				$verif->detection($_POST['valicode'])||$this->json("验证码不正确",0);
+				//$verif=new verif();
+				//$verif->detection($_POST['valicode'])||$this->json("验证码不正确",0);
 				unset($_POST['valicode']);
 				//添加用户
 				$user=new userModel();

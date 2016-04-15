@@ -4,6 +4,13 @@
 		static function run(){
 			APP::init();
 			APP::route();
+            try{
+                $obj = new ReflectionClass(APP::$__controller.'Controller');
+                $instance =$obj->newInstanceArgs();
+                $obj->getmethod($_GET['a'].'Action')->invoke($instance);
+            }catch (Exception $e){
+                APP::error($e);
+            }
 		}
 		static function init(){
             header("Content-Type:text/html;charset=utf8");
@@ -41,16 +48,9 @@
 			APP::$__module=$_GET['m'];
 			APP::$__controller=$_GET['c'];
 			APP::$__action=$_GET['a'];
-            $obj = new ReflectionClass($_GET['c'].'Controller');
-            if($obj->hasMethod($_GET['a'].'Action')){
-                $instance =$obj->newInstanceArgs();
-                $obj->getmethod($_GET['a'].'Action')->invoke($instance);
-            }else{
-                APP::error($class.' not has Action:'.$_GET['a']);
-            }
 		}
-		static function error($msg){
-			APP_DEBUG||$msg='error';
+		static function error($e){
+            $msg=APP_DEBUG?$e->getMessage():'error';
 			exit($msg);
 		}
 		static function classLoader($classname){
@@ -63,7 +63,7 @@
 			if(file_exists($file)){
 				include $file;
 			}else{
-				APP::error('File not found:'.$file);
+                throw new Exception('File not found:'.$file);
 			}
 		}
 	}
@@ -78,7 +78,7 @@
 			return $this;
 		}
         function page($count,$p=1,$total=10){
-            $data=array('total'=>$count,'nowPage'=>$p,'totalPage'=>ceil($count/$total));
+            $data=array('total'=>$count,'nowPage'=>$p,'totalPage'=>ceil($count/$total),'nextPage'=>$p+1,'prevPage'=>$p-1);
             return array('limit'=>array(($p-1)*$total,$p*$total),'data'=>$data);            
         }
 	}
@@ -134,7 +134,7 @@
 	   		$module=empty(APP::$__module)?"":APP::$__module.'/';
 	   		$tpl=$tpl?$tpl:APP::$__controller.'_'.APP::$__action;
 	        $tplfile = APP_FILE.APP::$config['app']['view_file'].$module. $tpl.'.html';
-	        if (!file_exists($tplfile)) APP::error('can not load template file : ' . $tplfile);
+	        if (!file_exists($tplfile)) throw new Exception('can not load template file : ' . $tplfile);
 	        $compliefile = APP_FILE.APP::$config['app']['runtime_file'].'chache/'.$module.md5($tpl).'.php';	
 	        if (!file_exists($compliefile) || filemtime($tplfile) > filemtime($compliefile)) {
 	        	$_v=new View();

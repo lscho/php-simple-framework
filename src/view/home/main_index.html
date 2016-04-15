@@ -56,37 +56,17 @@
                     {/foreach}
                   </section>
                   <footer>
-                    <ul class="pager" style="display: none;">
+                    <ul class="pager">
+                      {if $page['nowPage']>1}
                       <li class="previous">
-                        <a href="#">« 上一页</a>
+                        <a href="?tab={$tabs}&p={$page['prevPage']}">« 上一页</a>
                       </li>
-                      <li>
-                        <a href="#">1</a>
-                      </li>
-                      <li>
-                        <a href="#">⋯</a>
-                      </li>
-                      <li>
-                        <a href="#">6</a>
-                      </li>
-                      <li class="active">
-                        <a href="#">7</a>
-                      </li>
-                      <li>
-                        <a href="#">8</a>
-                      </li>
-                      <li>
-                        <a href="#">9</a>
-                      </li>
-                      <li>
-                        <a href="#">⋯</a>
-                      </li>
-                      <li>
-                        <a href="#">12</a>
-                      </li>
+                      {/if}
+                      {if $page['nowPage']<$page['totalPage']}
                       <li class="next">
-                        <a href="#">下一页 »</a>
+                        <a href="?tab={$tabs}&p={$page['nextPage']}">下一页 »</a>
                       </li>
+                      {/if}
                     </ul>
                   </footer>
                 </div>
