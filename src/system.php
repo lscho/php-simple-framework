@@ -1,15 +1,15 @@
 <?php
-	class APP{
+	class App{
 		public static $config,$__module,$__controller,$__api,$__action;	
 		static function run(){
-			APP::init();
-			APP::route();
+			App::init();
+			App::route();
             try{
-                $obj = new ReflectionClass(APP::$__controller.'Controller');
+                $obj = new ReflectionClass(App::$__controller.'Controller');
                 $instance =$obj->newInstanceArgs();
                 $obj->getmethod($_GET['a'].'Action')->invoke($instance);
             }catch (Exception $e){
-                APP::error($e);
+                APP_DEBUG?exit($e->getMessage()):APP::log($e->getMessage());
             }
 		}
 		static function init(){
@@ -17,21 +17,21 @@
             error_reporting(E_ALL || ~E_NOTICE);
             date_default_timezone_set('Asia/Shanghai');
             session_start();
-			if(empty(APP::$config)&&file_exists(APP_FILE.'config.php')) APP::$config=include APP_FILE.'config.php';
-            define('BASE_FILE',empty(APP::$config['app']['base_file'])?"":APP::$config['app']['base_file']);
+			if(empty(App::$config)&&file_exists(APP_FILE.'config.php')) App::$config=include APP_FILE.'config.php';
+            define('BASE_FILE',empty(App::$config['app']['base_file'])?"":App::$config['app']['base_file']);
 		}
 		static function route(){
-			if(!empty(APP::$config['rewrite'])){
+			if(!empty(App::$config['rewrite'])){
 				if( ($pos = strpos( $_SERVER['REQUEST_URI'], '?' )) !== false )
 					parse_str( substr( $_SERVER['REQUEST_URI'], $pos + 1 ), $_GET );
-				foreach(APP::$config['rewrite'] as $rule => $mapper){
+				foreach(App::$config['rewrite'] as $rule => $mApper){
 					if('/' == $rule)$rule = '';
 					if(0!==stripos($rule, 'http://'))
 						$rule = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\') .'/'.$rule;
 					$rule = '/'.str_ireplace(array('\\\\', 'http://', '/', '<', '>',  '.'), 
 						array('', '', '\/', '(?<', '>\w+)', '\.'), $rule).'/i';
 					if(preg_match($rule, 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $matchs)){
-						$route = explode("/", $mapper);
+						$route = explode("/", $mApper);
 						if(isset($route[2])){
 							list($_GET['m'], $_GET['c'], $_GET['a']) = $route;
 						}else{
@@ -45,16 +45,21 @@
 				}
 			}
 			$_GET['m']=!empty($_GET['m'])?$_GET['m']:'home';
-			APP::$__module=$_GET['m'];
-			APP::$__controller=$_GET['c'];
-			APP::$__action=$_GET['a'];
+			App::$__module=$_GET['m'];
+			App::$__controller=$_GET['c'];
+			App::$__action=$_GET['a'];
 		}
-		static function error($e){
-            $msg=APP_DEBUG?$e->getMessage():'error';
-			exit($msg);
-		}
+        static function log($log=""){
+            $dir=APP_FILE.App::$config['app']['cache_file'].'log/';
+            is_dir($dir)||mkdir($dir,0777);
+            $myfile = fopen($dir.date('Y-m-d',time()).".log", "a");
+            $log=date('Y-m-d H:i:s',time())."\t".$_SERVER["REMOTE_ADDR"]."\t".$log;
+            $log.=strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'?"\r\n":"\n";
+            fwrite($myfile, $log);
+            fclose($myfile);
+        }
 		static function classLoader($classname){
-			$file=array('model/','controller/'.APP::$__module.'/');
+			$file=array('model/','controller/'.App::$__module.'/');
 			foreach($file as $k=>$v){
                 if(file_exists(APP_FILE.$v.$classname.'.class.php'))include APP_FILE.$v.$classname.'.class.php';
 			}
@@ -67,11 +72,11 @@
 			}
 		}
 	}
-	spl_autoload_register('APP::classLoader');
-	class Model extends db{	//基于medoo[http://medoo.in]
+	spl_autoload_register('App::classLoader');
+	class Model extends Db{	//基于medoo[http://medoo.in]
 		function __construct(){
 			$this->table=str_replace("Model","",get_class($this));
-			parent::__construct(APP::$config['db']);
+			parent::__construct(App::$config['db']);
 		}
 		function table($table){
 			$this->table=$table;
@@ -114,7 +119,7 @@
 	            '<?php if (count((array)\$\1)) foreach((array)\$\1 as \$this->vars[\'\2\']=>$this->vars[\'\3\']) {?>'
 	        );
 	        $text = preg_replace($pattern, $replacement, $text);
-	        $basefile=APP_FILE.APP::$config['app']['runtime_file'].'chache/';
+	        $basefile=APP_FILE.App::$config['app']['cache_file'].'runtime/';
 	        is_dir($basefile)||mkdir($basefile,0777);
 	        if(!empty($module)&&!is_dir($basefile.$module))mkdir($basefile.$module,0777);
 	        $compliefile = $basefile.$module.md5(basename($tpl,'.html')) . '.php';
@@ -131,24 +136,27 @@
     	}
 	   function display($tpl=0){
             $this->vars['es']=array("session"=>$_SESSION,"get"=>$_GET,"post"=>$_POST);
-	   		$module=empty(APP::$__module)?"":APP::$__module.'/';
-	   		$tpl=$tpl?$tpl:APP::$__controller.'_'.APP::$__action;
-	        $tplfile = APP_FILE.APP::$config['app']['view_file'].$module. $tpl.'.html';
+	   		$module=empty(App::$__module)?"":App::$__module.'/';
+	   		$tpl=$tpl?$tpl:App::$__controller.'_'.App::$__action;
+	        $tplfile = APP_FILE.App::$config['app']['view_file'].$module. $tpl.'.html';
 	        if (!file_exists($tplfile)) throw new Exception('can not load template file : ' . $tplfile);
-	        $compliefile = APP_FILE.APP::$config['app']['runtime_file'].'chache/'.$module.md5($tpl).'.php';	
+	        $compliefile = APP_FILE.App::$config['app']['cache_file'].'runtime/'.$module.md5($tpl).'.php';	
 	        if (!file_exists($compliefile) || filemtime($tplfile) > filemtime($compliefile)) {
 	        	$_v=new View();
 	            $_v->parse($tplfile,$module);
 	        }
 	        include_once($compliefile);
 	    }
+        function common($file){
+            include APP_FILE.'common/'.$file;
+        }
 	    function __call($method,$arg){
 	    	if(in_array(strtolower($method),array('ispost','isget','ishead','isdelete','isput'))){
 	    		return strtolower($_SERVER['REQUEST_METHOD']) == strtolower(substr($method,2));
 	    	}
 	    }
 	}
-    class db {
+    class Db {
         protected $database_type,$charset,$database_name,$server,$username,$password,$database_file,$socket,$port,$prefix,$table,$option = array(),$logs = array(),$debug_mode = false;
         public function __construct($options = null) {
             try {

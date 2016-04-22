@@ -7,6 +7,7 @@
 			$topic=new topicModel();
 			$p=empty($_GET['p'])?1:$_GET['p'];
 			$data=$topic->getList($where,$p,10);
+			$this->register_use('index','index');
 			$this->assign('page',$data['page']);
 			$this->assign('list',$data['list']);
 			$this->display();

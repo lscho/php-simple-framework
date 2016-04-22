@@ -56,11 +56,11 @@
 		}
 		//插件机制
         function register_use($behavior,$data){
-            $handle=opendir(APP_FILE.'use/');
+			$handle=opendir(APP_FILE.'common/plugins/');
             while($file=readdir($handle)) {
                 if (($file!=".")&&($file!="..")&&strstr($file,'.class.php')){
                     $classname=str_replace('.class.php','',$file);
-                    include APP_FILE.'use/'.$file;
+                    $this->common('plugins/'.$file);
                     $obj = new ReflectionClass($classname);
                     if($obj->hasMethod('notify')){
                         $instance =$obj->newInstanceArgs();

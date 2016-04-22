@@ -14,7 +14,7 @@
 		),
 		'app'=>array(
 			'view_file'=>'view/',
-			'runtime_file'=>'runtime/',
+			'cache_file'=>'cache/',
 			'base_file'=>'/test'
 		),
 		'rewrite' => array(
