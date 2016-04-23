@@ -51,12 +51,15 @@
 		}
         static function log($log=""){
             $dir=APP_FILE.App::$config['app']['cache_file'].'log/';
-            is_dir($dir)||mkdir($dir,0777);
-            $myfile = fopen($dir.date('Y-m-d',time()).".log", "a");
-            $log=date('Y-m-d H:i:s',time())."\t".$_SERVER["REMOTE_ADDR"]."\t".$log;
-            $log.=strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'?"\r\n":"\n";
-            fwrite($myfile, $log);
-            fclose($myfile);
+            is_dir($dir)||mkdir($dir,0777,true);
+            $file=$dir.date('Y-m-d',time()).".log";
+            if(abs(filesize($file))<5120000){
+                $myfile = fopen($file, "a");
+                $log=date('Y-m-d H:i:s',time())."\t".$_SERVER["REMOTE_ADDR"]."\t".$log;
+                $log.=strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'?"\r\n":"\n";
+                fwrite($myfile, $log);
+                fclose($myfile);
+            }
         }
 		static function classLoader($classname){
 			$file=array('model/','controller/'.App::$__module.'/');
@@ -120,7 +123,7 @@
 	        );
 	        $text = preg_replace($pattern, $replacement, $text);
 	        $basefile=APP_FILE.App::$config['app']['cache_file'].'runtime/';
-	        is_dir($basefile)||mkdir($basefile,0777);
+	        is_dir($basefile)||mkdir($basefile,0777,true);
 	        if(!empty($module)&&!is_dir($basefile.$module))mkdir($basefile.$module,0777);
 	        $compliefile = $basefile.$module.md5(basename($tpl,'.html')) . '.php';
 	        if ($fp = @fopen($compliefile, 'w')) {
