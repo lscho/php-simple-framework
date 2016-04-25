@@ -18,7 +18,7 @@
             date_default_timezone_set('Asia/Shanghai');
             session_start();
 			if(empty(App::$config)&&file_exists(APP_FILE.'config.php')) App::$config=include APP_FILE.'config.php';
-            define('BASE_FILE',empty(App::$config['app']['base_file'])?"":App::$config['app']['base_file']);
+            define('BASE_DIR',str_replace($_SERVER['DOCUMENT_ROOT'],"",str_replace( '\\' , '/' , realpath(dirname(__FILE__).'/../'))));
 		}
 		static function route(){
 			if(!empty(App::$config['rewrite'])){
@@ -50,7 +50,7 @@
 			App::$__action=$_GET['a'];
 		}
         static function log($log=""){
-            $dir=APP_FILE.App::$config['app']['cache_file'].'log/';
+            $dir=APP_FILE.App::$config['app']['cache'].'log/';
             is_dir($dir)||mkdir($dir,0777,true);
             $file=$dir.date('Y-m-d',time()).".log";
             if(abs(filesize($file))<5120000){
@@ -122,7 +122,7 @@
 	            '<?php if (count((array)\$\1)) foreach((array)\$\1 as \$this->vars[\'\2\']=>$this->vars[\'\3\']) {?>'
 	        );
 	        $text = preg_replace($pattern, $replacement, $text);
-	        $basefile=APP_FILE.App::$config['app']['cache_file'].'runtime/';
+	        $basefile=APP_FILE.App::$config['app']['cache'].'runtime/';
 	        is_dir($basefile)||mkdir($basefile,0777,true);
 	        if(!empty($module)&&!is_dir($basefile.$module))mkdir($basefile.$module,0777);
 	        $compliefile = $basefile.$module.md5(basename($tpl,'.html')) . '.php';
@@ -141,18 +141,15 @@
             $this->vars['es']=array("session"=>$_SESSION,"get"=>$_GET,"post"=>$_POST);
 	   		$module=empty(App::$__module)?"":App::$__module.'/';
 	   		$tpl=$tpl?$tpl:App::$__controller.'_'.App::$__action;
-	        $tplfile = APP_FILE.App::$config['app']['view_file'].$module. $tpl.'.html';
+	        $tplfile = APP_FILE.App::$config['app']['view'].$module. $tpl.'.html';
 	        if (!file_exists($tplfile)) throw new Exception('can not load template file : ' . $tplfile);
-	        $compliefile = APP_FILE.App::$config['app']['cache_file'].'runtime/'.$module.md5($tpl).'.php';	
+	        $compliefile = APP_FILE.App::$config['app']['cache'].'runtime/'.$module.md5($tpl).'.php';	
 	        if (!file_exists($compliefile) || filemtime($tplfile) > filemtime($compliefile)) {
 	        	$_v=new View();
 	            $_v->parse($tplfile,$module);
 	        }
 	        include_once($compliefile);
 	    }
-        function common($file){
-            include APP_FILE.'common/'.$file;
-        }
 	    function __call($method,$arg){
 	    	if(in_array(strtolower($method),array('ispost','isget','ishead','isdelete','isput'))){
 	    		return strtolower($_SERVER['REQUEST_METHOD']) == strtolower(substr($method,2));

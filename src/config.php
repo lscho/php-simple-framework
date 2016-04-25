@@ -13,9 +13,8 @@
 		    'prefix' => 'es_',		    			
 		),
 		'app'=>array(
-			'view_file'=>'view/',
-			'cache_file'=>'cache/',
-			'base_file'=>'/test'
+			'view'=>'view/',
+			'cache'=>'cache/',
 		),
 		'rewrite' => array(
 			't/<sign>'				=>'topic/read',

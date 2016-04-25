@@ -15,7 +15,7 @@
 				$_SESSION['baseinfo']=$base->getinfo();
 			}
 			$this->assign('baseinfo',$_SESSION['baseinfo']);
-			$this->assign('__basefile',BASE_FILE);
+			$this->assign('__basefile',BASE_DIR);
 			//获取网站配置
 			if(empty($_SESSION['web_config'])){
 				$_SESSION['web_config']=array(
@@ -60,7 +60,7 @@
             while($file=readdir($handle)) {
                 if (($file!=".")&&($file!="..")&&strstr($file,'.class.php')){
                     $classname=str_replace('.class.php','',$file);
-                    $this->common('plugins/'.$file);
+                    include APP_FILE.'common/plugins/'.$file;
                     $obj = new ReflectionClass($classname);
                     if($obj->hasMethod('notify')){
                         $instance =$obj->newInstanceArgs();
