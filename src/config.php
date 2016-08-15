@@ -4,10 +4,10 @@
 		'db'=>array(
 			//必选项
 		    'database_type' => 'mysql',
-		    'database_name' => 'es',
-		    'server' => '127.0.0.1',
-		    'username' => 'root',
-		    'password' => '123456',
+		    'database_name' => 'yibo',
+		    'server' => 'rm-2zea131kexh3wni55o.mysql.rds.aliyuncs.com',
+		    'username' => 'yibo',
+		    'password' => 'yiboYyibo123',
 		    'charset' => 'utf8',
 		    //可选项
 		    'port' => 3306,

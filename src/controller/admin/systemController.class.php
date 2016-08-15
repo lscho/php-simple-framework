@@ -23,4 +23,6 @@ class systemController extends baseController{
 			$rs?$this->json(lang('action_success')):$this->json(lang('action_error'),0);
 		}
 	}
+
+	
 }

@@ -24,8 +24,16 @@
 				if(md5(md5($_POST['password']).'es')!=$adminInfo['password']){
 					$this->json(lang('admin_passwd_error'),0);
 				}
+				$admin->update(array('logintime'=>time()));
 				$_SESSION['admin']=$adminInfo;
 				$this->json(lang('admin_login_success'),1);
 			}
+		}
+		/*
+		* 登出
+		*/
+		function outAction(){
+			$_SESSION['admin']=null;
+			$this->jump(__ROOT__."/admin/login");
 		}
 	}

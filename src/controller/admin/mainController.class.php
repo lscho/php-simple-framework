@@ -1,5 +1,5 @@
 <?php
-	class mainController extends Controller{
+	class mainController extends baseController{
 		function indexAction(){
 
 			$this->display();
