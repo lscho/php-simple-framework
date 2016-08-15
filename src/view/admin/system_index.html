@@ -1,0 +1,114 @@
+{include file='header'}
+<div class="am-cf admin-main">
+    {include file='sidebar'}
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-cf am-padding am-padding-bottom-0">
+                <div class="am-fl am-cf">
+                    <strong class="am-text-primary am-text-lg">基础设置</strong> /
+                    <small>Basic setting</small>
+                </div>
+            </div>
+            <hr>
+            <div class="am-tabs am-margin" data-am-tabs>
+                <ul class="am-tabs-nav am-nav am-nav-tabs">
+                    <li class="am-active"><a href="#tab1">基本设置</a></li>
+                    <li><a href="#tab2">安全设置</a></li>
+                </ul>
+                <div class="am-tabs-bd">
+                    <div class="am-tab-panel am-fade am-in am-active" id="tab1">
+                        <form class="am-form" method="post" action="{$__ROOT__}/admin/system" id="base-form">
+                          <input name="type" type="hidden" value="1" />
+                            <div class="am-g am-margin-top">
+                                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                    网站名称
+                                </div>
+                                <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                                    <input type="text" name="web[title]" value="{$web.title}" class="am-input-sm">
+                                </div>
+                            </div>
+                            <div class="am-g am-margin-top">
+                                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                    网站描述
+                                </div>
+                                <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                                    <input type="text" name="web[description]" value="{$web.description}" class="am-input-sm">
+                                </div>
+                            </div>
+                            <div class="am-g am-margin-top">
+                                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                    关键词
+                                </div>
+                                <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                                    <input type="text" name="web[keywords]" value="{$web.keywords}" class="am-input-sm">
+                                </div>
+                            </div>
+
+                            <div class="am-g am-margin-top">
+                                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                    网站版权
+                                </div>
+                                <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                                    <input type="text" name="web[copyright]" value="{$web.copyright}" class="am-input-sm">
+                                </div>
+                            </div>
+
+                            <div class="am-g am-margin-top-sm">
+                                <div class="am-u-sm-12 am-u-md-2 am-text-right admin-form-text">
+                                    备案号
+                                </div>
+                                <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                                    <input type="text" name="web[icp]" value="{$web.icp}" class="am-input-sm">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="am-tab-panel am-fade" id="tab2">
+                        <form class="am-form">
+                            <div class="am-g am-margin-top-sm">
+                                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                    SEO 标题
+                                </div>
+                                <div class="am-u-sm-8 am-u-md-4 am-u-end">
+                                    <input type="text" class="am-input-sm">
+                                </div>
+                            </div>
+                            <div class="am-g am-margin-top-sm">
+                                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                    SEO 关键字
+                                </div>
+                                <div class="am-u-sm-8 am-u-md-4 am-u-end">
+                                    <input type="text" class="am-input-sm">
+                                </div>
+                            </div>
+                            <div class="am-g am-margin-top-sm">
+                                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                    SEO 描述
+                                </div>
+                                <div class="am-u-sm-8 am-u-md-4 am-u-end">
+                                    <textarea rows="4"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="am-margin">
+                <button type="button" data-toggle="ajaxform" data-form="#base-form" class="am-btn am-btn-primary am-btn-xs">提交保存</button>
+                <button type="button" class="am-btn am-btn-primary am-btn-xs">放弃保存</button>
+            </div>
+        </div>
+        {include file='footer'}
+    </div>
+    <!-- content end -->
+</div>
+<script type="text/javascript">
+  function callback(rs){
+    alert(rs.msg);
+    if(rs.status==1){
+        window.location.reload();
+    }
+  }
+</script>
+{include file='bottom'}

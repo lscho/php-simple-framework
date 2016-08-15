@@ -1,24 +1,25 @@
 <?php
 	class App{
-		public static $config,$__module,$__controller,$__api,$__action;	
+		public static $config,$_module,$_controller,$_action,$lang,$model;	
 		static function run(){
 			App::init();
 			App::route();
             try{
-                $obj = new ReflectionClass(App::$__controller.'Controller');
+                $obj = new ReflectionClass(App::$_controller.'Controller');
                 $instance =$obj->newInstanceArgs();
-                $obj->getmethod($_GET['a'].'Action')->invoke($instance);
+                $obj->getmethod(App::$_action.'Action')->invoke($instance);
             }catch (Exception $e){
                 APP_DEBUG?exit($e->getMessage()):APP::log($e->getMessage());
             }
 		}
 		static function init(){
             header("Content-Type:text/html;charset=utf8");
+            header('X-Powered-By: es 1.0');  
             error_reporting(E_ALL || ~E_NOTICE);
             date_default_timezone_set('Asia/Shanghai');
             session_start();
 			if(empty(App::$config)&&file_exists(APP_FILE.'config.php')) App::$config=include APP_FILE.'config.php';
-            define('BASE_DIR',str_replace($_SERVER['DOCUMENT_ROOT'],"",str_replace( '\\' , '/' , realpath(dirname(__FILE__).'/../'))));
+            define('__ROOT__',str_replace($_SERVER['DOCUMENT_ROOT'],"",str_replace( '\\' , '/' , realpath(dirname(__FILE__).'/../'))));
 		}
 		static function route(){
 			if(!empty(App::$config['rewrite'])){
@@ -32,11 +33,11 @@
 						array('', '', '\/', '(?<', '>\w+)', '\.'), $rule).'/i';
 					if(preg_match($rule, 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $matchs)){
 						$route = explode("/", $mApper);
-						if(isset($route[2])){
-							list($_GET['m'], $_GET['c'], $_GET['a']) = $route;
-						}else{
-							list($_GET['c'], $_GET['a']) = $route;
-						}
+                        if(isset($route[2])){
+                            list($_GET['m'], $_GET['c'], $_GET['a']) = $route;
+                        }else{
+                            list($_GET['c'], $_GET['a']) = $route;
+                        }
 						foreach($matchs as $matchkey => $matchval){
 							if(!is_int($matchkey))$_GET[$matchkey] = $matchval;
 						}
@@ -44,12 +45,13 @@
 					}
 				}
 			}
-			$_GET['m']=!empty($_GET['m'])?$_GET['m']:'home';
-			App::$__module=$_GET['m'];
-			App::$__controller=$_GET['c'];
-			App::$__action=$_GET['a'];
+            $_REQUEST = array_merge($_POST, $_GET);
+            App::$_module=$_REQUEST['m'];
+            App::$_controller=!empty($_REQUEST['c'])?strtolower($_REQUEST['c']):APP::$config['app']['controller'];
+            App::$_action=!empty($_REQUEST['a'])?strtolower($_REQUEST['a']):APP::$config['app']['action'];      
 		}
         static function log($log=""){
+            if(!APP::$config['app']['log'])return false;
             $dir=APP_FILE.App::$config['app']['cache'].'log/';
             is_dir($dir)||mkdir($dir,0777,true);
             $file=$dir.date('Y-m-d',time()).".log";
@@ -62,9 +64,13 @@
             }
         }
 		static function classLoader($classname){
-			$file=array('model/','controller/'.App::$__module.'/');
+            $module=empty(App::$_module)?"":App::$_module.'/';
+			$file=array('model/','controller/'.$module);
 			foreach($file as $k=>$v){
-                if(file_exists(APP_FILE.$v.$classname.'.class.php'))include APP_FILE.$v.$classname.'.class.php';
+                if(file_exists(APP_FILE.$v.$classname.'.class.php')){
+                    require_once(APP_FILE.$v.$classname.'.class.php');
+                    break;
+                }
 			}
 		}
 		static function load($file){
@@ -76,6 +82,20 @@
 		}
 	}
 	spl_autoload_register('App::classLoader');
+
+    function lang($key=null){
+        if(!APP::$lang){
+            APP::$lang=file_exists(APP_FILE.'lang.php')?include APP_FILE.'lang.php':array();
+        }
+        return $key?APP::$lang[$key]:APP::$lang;
+    }
+    function cache(){
+        $num=func_num_args();
+        $key=func_get_arg(1);
+        if($num==1){
+            
+        }
+    }
 	class Model extends Db{	//基于medoo[http://medoo.in]
 		function __construct(){
 			$this->table=str_replace("Model","",get_class($this));
@@ -139,8 +159,9 @@
     	}
 	   function display($tpl=0){
             $this->vars['es']=array("session"=>$_SESSION,"get"=>$_GET,"post"=>$_POST);
-	   		$module=empty(App::$__module)?"":App::$__module.'/';
-	   		$tpl=$tpl?$tpl:App::$__controller.'_'.App::$__action;
+            $this->vars['__ROOT__']=__ROOT__;
+	   		$module=empty(App::$_module)?"":App::$_module.'/';
+	   		$tpl=$tpl?$tpl:App::$_controller.'_'.App::$_action;
 	        $tplfile = APP_FILE.App::$config['app']['view'].$module. $tpl.'.html';
 	        if (!file_exists($tplfile)) throw new Exception('can not load template file : ' . $tplfile);
 	        $compliefile = APP_FILE.App::$config['app']['cache'].'runtime/'.$module.md5($tpl).'.php';	
@@ -150,6 +171,13 @@
 	        }
 	        include_once($compliefile);
 	    }
+        function jump($url){
+            header("Location: $url"); 
+        }
+        function json($msg="",$status=1,$data=array()){
+            header('Content-type:text/json');
+            die(json_encode(array("msg"=>$msg,"status"=>$status,"data"=>$data)));
+        }            
 	    function __call($method,$arg){
 	    	if(in_array(strtolower($method),array('ispost','isget','ishead','isdelete','isput'))){
 	    		return strtolower($_SERVER['REQUEST_METHOD']) == strtolower(substr($method,2));

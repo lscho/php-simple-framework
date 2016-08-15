@@ -1,5 +1,6 @@
 <?php
 	return array(
+		//数据库
 		'db'=>array(
 			//必选项
 		    'database_type' => 'mysql',
@@ -12,27 +13,24 @@
 		    'port' => 3306,
 		    'prefix' => 'es_',		    			
 		),
+		//项目
 		'app'=>array(
-			'view'=>'view/',
-			'cache'=>'cache/',
+			'view'=>'view/',			//模版文件目录
+			'cache'=>'cache/',			//缓存目录
+			'log'=>true,				//开启日志记录
+			'module'=>'home',			//默认模块
+			'controller'=>'main',		//默认控制器
+			'action'=>'index',			//默认动作
 		),
+		//路由映射
 		'rewrite' => array(
-			't/<sign>'				=>'topic/read',
-			'admin/<c>/<a>'    		=> 'admin/<c>/<a>', 
-			'<c>/<a>'          		=> '<c>/<a>',
-			'<c>'          			=> '<c>/index',
-			'/'                		=> 'main/index',
-		),
-		'upload'=>array(
-			'list'=>'jpg,json,zip,rar',
-			'file'=>'upload/'
-		),
-		'email'=>array(
-			'user'=>'server@eyblog.com',
-			'password'=>'123456.Server',
-			'host'=>'smtp.exmail.qq.com',
-			'port'=>25,
-			'auth'=>false
+			'admin/<c>_<a>_<p>'    	=> 'admin/<c>/<a>', 
+			'admin/<c>_<a>'    	=> 'admin/<c>/<a>', 
+			'admin/<c>'   		=> 'admin/<c>/index',
+			'admin'				=> 'admin/main/index',
+			'<c>/<a>'          	=> '<c>/<a>',
+			'<c>'          		=> 'home/<c>/index',
+			'/'                	=> 'home/main/index',
 		)
 	);
 ?>

@@ -15,7 +15,7 @@
 				$_SESSION['baseinfo']=$base->getinfo();
 			}
 			$this->assign('baseinfo',$_SESSION['baseinfo']);
-			$this->assign('__basefile',BASE_DIR);
+			$this->assign('__basefile',__ROOT__);
 			//获取网站配置
 			if(empty($_SESSION['web_config'])){
 				$_SESSION['web_config']=array(
@@ -29,15 +29,6 @@
 			$topic=new topicModel();
 			$newTopic=$topic->getNew();
 			$this->assign('newTopic',$newTopic);			
-		}
-		//跳转
-		function jump($url){
-			header("Location: $url"); 
-		}
-		//输出json
-		function json($msg="",$status=1,$url=""){
-			header('Content-type:text/json');
-			die(json_encode(array("msg"=>$msg,"status"=>$status,"url"=>$url)));
 		}
 		//检测参数是否为空
 		function isempty($data=array(),$method='post'){

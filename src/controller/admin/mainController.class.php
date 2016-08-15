@@ -1,9 +1,7 @@
 <?php
-	class mainController extends baseController{
+	class mainController extends Controller{
 		function indexAction(){
-			$user=new usersModel();
-			$rs=$user->select('*');
-			$this->assign('title','rccoder sb');
+
 			$this->display();
 		}
 	}
