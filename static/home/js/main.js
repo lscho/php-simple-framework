@@ -1,0 +1,1 @@
+$(".page").height($(window).height());

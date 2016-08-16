@@ -1,6 +1,6 @@
 <?php
 	class App{
-		public static $config,$_module,$_controller,$_action,$lang,$model;	
+		public static $config=array(),$_module,$_controller,$_action,$lang,$model;	
 		static function run(){
 			App::init();
 			App::route();
@@ -15,10 +15,11 @@
 		static function init(){
             header("Content-Type:text/html;charset=utf8");
             header('X-Powered-By: es 1.0');  
-            error_reporting(E_ALL || ~E_NOTICE);
+            error_reporting(E_ALL^E_NOTICE);
             date_default_timezone_set('Asia/Shanghai');
             session_start();
-			if(empty(App::$config)&&file_exists(APP_FILE.'config.php')) App::$config=include APP_FILE.'config.php';
+			if(empty(App::$config)&&file_exists(APP_FILE.'config.dev.php')) App::$config=include APP_FILE.'config.dev.php';
+            if(file_exists(APP_FILE.'config.pro.php')&&$_dev=include APP_FILE.'config.pro.php')APP::$config=array_merge(APP::$config,$_dev);
             define('__ROOT__',str_replace($_SERVER['DOCUMENT_ROOT'],"",str_replace( '\\' , '/' , realpath(dirname(__FILE__).'/../'))));
 		}
 		static function route(){
@@ -98,16 +99,16 @@
     }
 	class Model extends Db{	//基于medoo[http://medoo.in]
 		function __construct(){
-			$this->table=str_replace("Model","",get_class($this));
+			$this->table=strtolower(preg_replace('/((?<=[a-z])(?=[A-Z]))/', '_', str_replace("Model","",get_class($this))));
 			parent::__construct(App::$config['db']);
 		}
 		function table($table){
 			$this->table=$table;
 			return $this;
 		}
-        function page($count,$p=1,$total=10){
-            $data=array('total'=>$count,'nowPage'=>$p,'totalPage'=>ceil($count/$total),'nextPage'=>$p+1,'prevPage'=>$p-1);
-            return array('limit'=>array(($p-1)*$total,$p*$total),'data'=>$data);            
+        function page($count,$p=1,$pageSize=10){
+            $data=array('total'=>$count,'nowPage'=>$p,'totalPage'=>ceil($count/$pageSize),'nextPage'=>$p+1,'prevPage'=>$p-1);
+            return array('limit'=>array(($p-1)*$pageSize,$pageSize),'data'=>$data);            
         }
 	}
 	class View{

@@ -1,7 +1,7 @@
 <?php
 	class mainController extends baseController{
 		function indexAction(){
-			
-			$this->display();
+			$step=isset($_GET['step'])?$_GET['step']:1;
+			$this->display('main_index'.$step);
 		}
 	}

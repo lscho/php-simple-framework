@@ -1,4 +1,7 @@
 <?php  
-	class adminModel extends baseModel{
+/**
+* admin模型
+*/
+class adminModel extends baseModel{
 		
-	}
+}

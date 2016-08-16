@@ -16,7 +16,7 @@ class baseModel extends Model{
 	function getList($map=array(),$pageSize=10,$p=1){
 		    //分页
 		$count=$this->count($map);
-		$page=$this->page($count,$p,$count);
+		$page=$this->page($count,$p,$pageSize);
 		$map['ORDER']='id DESC';
 		$map['LIMIT']=$page['limit'];
 		$list=$this->select('*',$map);
