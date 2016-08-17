@@ -22,19 +22,17 @@ class sevenController extends baseController{
 			$this->json('已经签到过了',0);
 		}
 		//检测是否上传图片
-		if(empty($_FILES["img"]["name"])){
+		if(empty($_POST["img"])){
 			$this->json('请上传图片',0);
 		}
-		//引入文件上传类库
-		APP::load(APP_FILE.'common/class/upload.class.php');
-		$upload=new upload();
 		$file_path="static/upload/seven/";
-		$upload -> set("path", $file_path);
-		if($upload ->dos("img")){
-			$data['src']=$file_path.$upload->getFileName();
-		}else{
-			$this->json($up->getErrorMsg(),0);
-		}	
+		if (!file_exists($file_path) || !is_writable($file_path)) {
+			@mkdir($file_path, 0755,true);
+		}
+		$img = base64_decode(str_replace('data:image/jpeg;base64,', "", $_POST['img']));
+		$src=$file_path.date('Ymdhis').rand(1000,9999).'.jpg';
+		file_put_contents($src, $img);
+		$data['src']=$src;
 		//写入签到记录
 		$res=$this->list->insert($data);
 		if(!$res){

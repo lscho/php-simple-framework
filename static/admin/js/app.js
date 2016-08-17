@@ -16,6 +16,17 @@ $(function() {
                 break;
         }
     });
+    //管理员添加
+    $("#admin-add").click(function(){
+    	if($("form").validator('isFormValid')){
+    		ajaxform($(this).closest('form'),function(rs){
+    			alert(rs.msg);
+    			if(rs.status==1){
+    				window.location.href=root+"/admin/admin_list";
+    			}
+    		});
+    	}
+     });
 	//邮件发送
 	$("#send").on('click', function() {
 		var self = $(this);

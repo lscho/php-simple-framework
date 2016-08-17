@@ -28,7 +28,29 @@ class adminController extends baseController{
 
 			$this->display();
 		}else{
-			
+			if(empty($_GET['id'])){
+				//判断用户名是否存在
+				if($this->model->has(array('username'=>$_POST['username']))){
+					$this->json(lang('admin_user_has'),0);
+				}
+				//判断手机号码是否存在
+				if($this->model->has(array('mobile'=>$_POST['mobile']))){
+					$this->json(lang('admin_mobile_has'),0);
+				}				
+				//添加管理员
+				$data=$_POST;
+				$data['password']=md5(md5($data['password']).'es');
+				$data['regtime']=time();
+				$rs=$this->model->insert($data);
+			}else{
+				//更新管理员
+				$rs=$this->update($_POST,array('id'=>$_GET['id']));
+			}
+			if($rs){
+				$this->json(lang('action_success'));
+			}else{
+				$this->json(lang('action_error'));
+			}
 		}
 	}
 }
