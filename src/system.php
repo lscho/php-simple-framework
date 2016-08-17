@@ -176,7 +176,6 @@
             header("Location: $url"); 
         }
         function json($msg="",$status=1,$data=array()){
-            header('Content-type:text/json');
             die(json_encode(array("msg"=>$msg,"status"=>$status,"data"=>$data)));
         }            
 	    function __call($method,$arg){
