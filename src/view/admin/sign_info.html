@@ -19,38 +19,28 @@
                                     </th>
                                     <th class="table-id">id</th>
                                     <th class="table-title">用户标识</th>
-                                    <th class="table-type">连续签到次数</th>
-                                    <th class="table-type">操作</th>
+                                    <th class="table-type">签到时间</th>
+                                    <th class="table-type">上传照片</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {foreach $list k=>v}
+                                {foreach $info k=>v}
                                 <tr>
                                     <td>
                                         <input type="checkbox" />
                                     </td>
                                     <td>{$v.id}</td>
                                     <td>{$v.openid}</td>
-                                    <td>{$v.total}</td>
+                                    <td><?php echo date('Y-m-d',$v['addtime']) ?></td>
                                     <td>
-                                        <a href="{$__ROOT__}/admin/sign_info?id={$v.openid}" class="am-btn am-btn-primary am-btn-xs">查看</a>
+                                        <img src="{$__ROOT__}/{$v.src}" style="width: 50px;height: 30px;">
                                     </td>
                                 </tr>
                                 {/foreach}
                             </tbody>
                         </table>
                         <div class="am-cf">
-                            共{$page.total}条记录
-                            <div class="am-fr">
-                                <ul class="am-pagination">
-                                    {if $page['nowPage']>1}
-                                    <li><a href="{$__ROOT__}/admin/sign_seven_{$page['prevPage']}">«</a></li>
-                                    {/if}
-                                     {if $page['nowPage']<$page['totalPage']}
-                                    <li><a href="{$__ROOT__}/admin/sign_seven_{$page['nextPage']}">»</a></li>
-                                    {/if}
-                                </ul>
-                            </div>
+                            共{$total}条记录
                         </div>
 
                     </form>

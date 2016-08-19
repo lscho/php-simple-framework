@@ -25,7 +25,10 @@ class adminController extends baseController{
 	*/
 	function addAction(){
 		if($this->isGet()){
-
+			if(!empty($_GET['id'])){
+				$info=$this->model->get('*',array('id'=>$_GET['id']));
+				$this->assign('info',$info);
+			}
 			$this->display();
 		}else{
 			if(empty($_GET['id'])){
@@ -43,14 +46,19 @@ class adminController extends baseController{
 				$data['regtime']=time();
 				$rs=$this->model->insert($data);
 			}else{
+				if(empty($_POST['password'])){
+					unset($_POST['password']);
+				}else{
+					$_POST['password']=md5(md5($_POST['password']).'es');
+				}
 				//更新管理员
-				$rs=$this->update($_POST,array('id'=>$_GET['id']));
+				$rs=$this->model->update($_POST,array('id'=>$_GET['id']));
 			}
 			if($rs){
 				$this->json(lang('action_success'));
 			}else{
-				$this->json(lang('action_error'));
-			}
+				$this->json(lang('action_error'),0);
+			}			
 		}
 	}
 }

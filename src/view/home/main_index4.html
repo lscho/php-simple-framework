@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="{$__ROOT__}/static/home/css/main.css">
+    <link rel="stylesheet" type="text/css" href="{$__ROOT__}/static/home/css/loaders.css"/>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=0">
     <meta name="imagemode" content="force">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -23,6 +24,13 @@
 
 <body>
     <div class="page page4">
+    <div id="loading" style="position: absolute;top: 50%;z-index: 11;text-align: center;width: 100%;display: none;">
+        <div class="loader-inner ball-pulse">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+    </div>  
         <div class="txt41"><img src="{$__ROOT__}/static/home/images/txt41.png" alt=""><span>完成一组俯卧撑10个</span></div>
         <form method="post" action="{$__ROOT__}/seven/do" enctype="multipart/form-data">
 	        <div class="upload">
@@ -66,7 +74,9 @@
                 alert("上传图片进行签到");
                 return false;                
             }
+            $("#loading").show();
             $.post('{$__ROOT__}/seven/do',{img:img},function(rs){
+                $("#loading").hide();
                 alert(rs.msg);
                 if(rs.status==1){
                     window.location.href="{$__ROOT__}/?step=5";

@@ -27,6 +27,7 @@ return array(
     ),
     //路由映射
     'rewrite' => array(
+        'admin/<c>_<a>/<id>' => 'admin/<c>/<a>',
         'admin/<c>_<a>_<p>' => 'admin/<c>/<a>',
         'admin/<c>_<a>'     => 'admin/<c>/<a>',
         'admin/<c>'         => 'admin/<c>/index',

@@ -3,6 +3,7 @@
 * 模型基类
 */
 class baseModel extends Model{
+	public $order='id DESC';
 	/*
 	* 获取详情
 	*/
@@ -17,11 +18,15 @@ class baseModel extends Model{
 		    //分页
 		$count=$this->count($map);
 		$page=$this->page($count,$p,$pageSize);
-		$map['ORDER']='id DESC';
+		$map['ORDER']=$order;
 		$map['LIMIT']=$page['limit'];
 		$list=$this->select('*',$map);
 		$data['list']=$list;
 		$data['page']=$page['data'];
 		return $data;		
+	}
+	function setOrder($order){
+		$this->order=$order;
+		return $this;
 	}
 }
