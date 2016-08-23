@@ -32,10 +32,13 @@
 	<div class="btn11"><a href="{$__ROOT__}/?step=2">挑战人鱼线</a></div>
 	<div class="btn12"><a href="">车主天地</a></div>
 </div>
-
-
-
-
 <script src="{$__ROOT__}/static/home/js/main.js"></script>
+<script type="text/javascript">
+	var total="{$top.total}";
+	if(total==7){
+		alert('您已完成7天打卡');
+		window.location.href="{$__ROOT__}/?step=5";
+	}
+</script>
 </body>
 </html>

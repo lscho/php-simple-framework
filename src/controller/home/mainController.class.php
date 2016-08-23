@@ -7,15 +7,43 @@
 		function indexAction(){
 			//$_SESSION['openid']='orSDHtyha_AlF4dm4NZyLId-OUps';
 			if(empty($_SESSION['openid'])){
-				$this->getToken();
+				$url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbe73369f870a0158&redirect_uri=http%3a%2f%2fh5.jiang-mei.com%2fyiboh5%2fcms%2f?step=1&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+				$this->getToken($url);
 			}
+			//打卡说明
+			$model=new model('seven_rule');
+			$day=empty($_GET['day'])?date('Y-m-d'):$_GET['day'];	//测试期间允许自定义事件
+
+			$rule=$model->get('*',array('times'=>strtotime($day)));
+			$this->assign('rule',$rule);
 			//第N步
-			$step=isset($_GET['step'])?$_GET['step']:1;
+			$step=isset($_GET['step'])?$_GET['step']:'0';
+			//第三步
+			if($step==3){
+				//时间
+				$set=$model->table('seven_set')->get('*',array('id'=>1));
+				$start=$set['start']?$set['start']:strtotime(date('Ymd'));
+				//测试七天数据
+				for ($i=0; $i < 7 ; $i++) {
+					$date=$start+$i*86400;
+					$list[]=date('Y-m-d',$date);
+				}
+				$this->assign('day',(strtotime(date('Ymd'))-$start)/86400+1);
+				$this->assign('daylist',$list);
+			}
+			//第四步
+			if($step==4){
+				$this->assign('date',$day);
+			}
+			//第五步
 			if($step==5){
-				$this->getToken();
-				$this->assign('list',$this->getList());
-				$this->assign('top',$this->getTop());
+				$url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbe73369f870a0158&redirect_uri=http%3a%2f%2fh5.jiang-mei.com%2fyiboh5%2fcms%2f?step=5&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+				$this->getToken($url);
+				$data=$this->getList();
+				$this->assign('list',$data['date']);
+				$this->assign('src',"http://".$_SERVER['HTTP_HOST'].__ROOT__.'/'.$data['src']);
 				$this->assign('signPackage',$_SESSION['signPackage']);
+				$this->assign('top',$this->getTop());
 			}
 			$this->display('main_index'.$step);
 		}
@@ -50,35 +78,37 @@
 			$map['openid']=$_SESSION['openid'];
 			$map['ORDER']='addtime ASC';
 			$list=$model->select('*',$map);
+			//获取签到开始时间
+			$set=$model->table('seven_set')->get('*',array('id'=>1));
+			$start=$set['start']?$set['start']:strtotime(date('Ymd'));
+
 			$date=array();
 			if($list){
 				$num=0;
 				foreach ($list as $v) {
 					$src[$v['addtime']]=$v['src'];
 				}
-				for ($i=0; $i <7; $i++) { 
-					if($num<7){
-						$date[date('Y-m-d',$list[0]['addtime']+86400*$i)]=$src[$list[0]['addtime']+86400*$i];
-						$num++;
-					}
+				for ($i=0; $i < 7 ; $i++) {
+					$d=$start+$i*86400;
+					$date[$d]=$src[$d];
 				}
 			}
-			return $date;
+			$data['date']=$date;
+			return $data;
 		}
 
 		/*
 		* 获取微信ID
 		*/
-		function getToken(){
+		function getToken($url){
 			//引入微信类库
 			APP::load(APP_FILE.'common/class/wechat.class.php');
 			$weObj = new Wechat(APP::$config['wechat']);
 	 
 			// 注意 URL 一定要动态获取，不能 hardcode.
 			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-			$url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-			$signPackage = $weObj->getJsSign($url);
-			$url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbe73369f870a0158&redirect_uri=http%3a%2f%2fh5.jiang-mei.com%2fyiboh5%2fcms%2f?step=5&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+			$uri = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			$signPackage = $weObj->getJsSign($uri);
 			if (!isset($_GET['code'])) {
 				header("Location: ".$url);
 				exit;

@@ -16,7 +16,7 @@ class sevenController extends baseController{
 	function doAction(){
 		//检测是否有签到记录
 		$data['openid']=$_SESSION['openid'];
-		$data['addtime']=strtotime(date('Y-m-d'));
+		$data['addtime']=empty($_POST['date'])?strtotime(date('Y-m-d')):strtotime($_POST['date']);
 		$is_sign=$this->list->has(array('AND'=>$data));
 		if($is_sign){
 			$this->json('已经签到过了',0);
@@ -39,7 +39,7 @@ class sevenController extends baseController{
 			$this->json('签到失败',0);
 		}
 		//增加连续签到天数
-		$map['openid']=$_REQUEST['openid'];
+		$map['openid']=$_SESSION['openid'];
 		$rs=$this->user->get('*',$map);
 		unset($data['src']);
 		if(!$rs){
@@ -48,11 +48,7 @@ class sevenController extends baseController{
 			$this->user->insert($data);
 		}else{
 			//有记录则更新数据
-			if($data['addtime']-$rs['addtime']==86400){
-				$this->user->update(array('addtime'=>$data['addtime'],'total[+]'=>1),$map);
-			}else{
-				$this->user->update(array('addtime'=>$data['addtime'],'total'=>1),$map);
-			}
+			$this->user->update(array('addtime'=>$data['addtime'],'total[+]'=>1),$map);
 		}
 		$this->json('签到成功',1);
 	}

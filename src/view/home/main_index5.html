@@ -28,7 +28,7 @@
         <img src="{$__ROOT__}/static/home/images/share_hinit.png" alt="">
     </div>
 	<div class="img51">
-		<img src="{$__ROOT__}/static/home/images/img51.png" alt="">
+		<span>{$top.pm}</span>
 		<p>当前共 {$top.total} 人参与打卡</p>
 		<p>恭喜您排名第{$top.pm}</p>
 	</div>
@@ -104,8 +104,8 @@ wx.config({
 });
 //微信分享默认数据配置，全局变量，根据答案动态改变wechat_sharedata参数
 var wechat_sharedata = {
-    title: '累积打卡7天  获得奖品',
-    desc: '累积打卡7天  获得奖品',
+    title: '福特翼博-效傲全城（城市冒险计划-挑战人鱼线）',
+    desc: '累积打卡7天，即可获得奖品',
     link: 'http://h5.jiang-mei.com/yiboh5/cms/'
 }
 

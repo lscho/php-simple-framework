@@ -98,8 +98,8 @@
         }
     }
 	class Model extends Db{	//基于medoo[http://medoo.in]
-		function __construct(){
-			$this->table=strtolower(preg_replace('/((?<=[a-z])(?=[A-Z]))/', '_', str_replace("Model","",get_class($this))));
+		function __construct($table=null){
+			$this->table=$table?$table:strtolower(preg_replace('/((?<=[a-z])(?=[A-Z]))/', '_', str_replace("Model","",get_class($this))));
 			parent::__construct(App::$config['db']);
 		}
 		function table($table){

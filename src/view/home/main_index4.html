@@ -31,7 +31,7 @@
           <div></div>
         </div>
     </div>  
-        <div class="txt41"><img src="{$__ROOT__}/static/home/images/txt41.png" alt=""><span>完成一组俯卧撑10个</span></div>
+        <div class="txt41"><img src="{$__ROOT__}/static/home/images/txt41.png" alt=""><span>{$rule.rule}</span></div>
         <form method="post" action="{$__ROOT__}/seven/do" enctype="multipart/form-data">
 	        <div class="upload">
                 <img src="" id="img" style="width: 100%;height: 100%;display: none;">
@@ -39,7 +39,8 @@
 	            <input type="file" name="img" id="file" >
 	        </div>        	
         </form>
-        <div class="btn42" style="z-index: 10;"><a href="javascript:" id="do">完成打卡</a></div>
+        <div class="btn42" style="z-index: 10;bottom: 23%;"><a href="javascript:" id="do">完成打卡</a></div>
+        <div class="btn12" style="bottom: 16%;"><a href="{$__ROOT__}/?step=5">打卡历史</a></div>
     </div>
     <script src="{$__ROOT__}/static/home/js/main.js"></script>
     <script src="{$__ROOT__}/static/home/js/localResizeIMG.js" type="text/javascript"></script>
@@ -75,7 +76,10 @@
                 return false;                
             }
             $("#loading").show();
-            $.post('{$__ROOT__}/seven/do',{img:img},function(rs){
+            $.post('{$__ROOT__}/seven/do',{
+                img:img,
+                date:"{$date}"
+            },function(rs){
                 $("#loading").hide();
                 alert(rs.msg);
                 if(rs.status==1){

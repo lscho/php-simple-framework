@@ -27,6 +27,17 @@ $(function() {
     		});
     	}
      });
+    //规则添加
+    $("#rule-add").click(function(){
+    	if($("form").validator('isFormValid')){
+    		ajaxform($(this).closest('form'),function(rs){
+    			alert(rs.msg);
+    			if(rs.status==1){
+    				window.location.href=root+"/admin/sign_rule";
+    			}
+    		});
+    	}
+     });    
 	//邮件发送
 	$("#send").on('click', function() {
 		var self = $(this);

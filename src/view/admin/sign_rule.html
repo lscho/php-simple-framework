@@ -1,0 +1,154 @@
+{include file='header'}
+<div class="am-cf admin-main">
+    {include file='sidebar'}
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-cf am-padding am-padding-bottom-0">
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">报名规则</strong> / <small>Sign rule</small></div>
+            </div>
+            <hr>
+            <div class="am-g">
+                <div class="am-u-sm-12 am-u-md-9">
+                    <form class="am-form">
+                        <div class="am-g">
+                            <div class="am-form-group am-form-icon am-u-sm-12 am-u-md-3">
+                                <input type="text" id="start" class="am-form-field" placeholder="开始时间" value="{$set['start']}">
+                            </div>
+                            <div class="am-form-group am-form-icon am-u-sm-12 am-u-md-3">
+                                <input type="text" id="end" class="am-form-field" placeholder="结束时间" value="{$set['end']}">
+                            </div>
+                            <div class="am-form-group am-form-icon am-u-sm-12 am-u-md-4">
+                                <textarea placeholder="签到规则" id="rule" class="am-form-field" rows="1" style="height: 4rem;">{$set['rule']}</textarea>
+                            </div>                            
+                            <div class="am-form-group am-form-icon am-u-sm-12 am-u-md-2">
+                                <button id="set" type="button" class="am-btn am-btn-default am-radius">立即设置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="am-u-sm-12 am-u-md-3">
+                    <div class="am-btn-toolbar">
+                        <div class="am-btn-group am-btn-group-xs">
+                            <a class="am-btn am-btn-default" href="{$__ROOT__}/admin/sign_add"><span class="am-icon-plus"></span> 新增任务提示</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="am-g">
+                <div class="am-u-sm-12">
+                    <form class="am-form">
+                        <table class="am-table am-table-striped am-table-hover table-main">
+                            <thead>
+                                <tr>
+                                    <th class="table-check">
+                                        <input type="checkbox" />
+                                    </th>
+                                    <th class="table-id">序号</th>
+                                    <th class="table-title">时间</th>
+                                    <th class="table-type">签到任务</th>
+                                    <th class="table-type">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach $list k=>v}
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" />
+                                    </td>
+                                    <td><?php echo $k+1?></td>
+                                    <td><?php echo date('Y-m-d',$v['times'])?></td>
+                                    <td>{$v.rule}</td>
+                                    <td>
+                                        <a href="{$__ROOT__}/admin/sign_add/{$v.id}" class="am-btn am-btn-primary am-btn-xs">编辑</a>
+                                    </td>
+                                </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </form>                
+                </div>
+            </div>
+        </div>
+        {include file='footer'}
+    </div>
+    <!-- content end -->
+<script>
+  $(function() {
+    var nowTemp = new Date();
+    var nowDay = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0).valueOf();
+    var nowMoth = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), 1, 0, 0, 0, 0).valueOf();
+    var nowYear = new Date(nowTemp.getFullYear(), 0, 1, 0, 0, 0, 0).valueOf();
+    var start = $('#start');
+
+    var checkin = start.datepicker({
+      onRender: function(date, viewMode) {
+        // 默认 days 视图，与当前日期比较
+        var viewDate = nowDay;
+
+        switch (viewMode) {
+          // moths 视图，与当前月份比较
+          case 1:
+            viewDate = nowMoth;
+            break;
+          // years 视图，与当前年份比较
+          case 2:
+            viewDate = nowYear;
+            break;
+        }
+
+        return date.valueOf() < viewDate ? 'am-disabled' : '';
+      }
+    }).on('changeDate.datepicker.amui', function(ev) {
+        var newDate = new Date(ev.date)
+        newDate.setDate(newDate.getDate() + 6);
+        checkout.setValue(newDate);
+        checkin.close();
+        $('#end')[0].focus();
+    }).data('amui.datepicker');
+
+    var checkout = $('#end').datepicker({
+      onRender: function(date, viewMode) {
+        var inTime = checkin.date;
+        var inDay = inTime.valueOf();
+        var inMoth = new Date(inTime.getFullYear(), inTime.getMonth(), 1, 0, 0, 0, 0).valueOf();
+        var inYear = new Date(inTime.getFullYear(), 0, 1, 0, 0, 0, 0).valueOf();
+
+        // 默认 days 视图，与当前日期比较
+        var viewDate = inDay;
+
+        switch (viewMode) {
+          // moths 视图，与当前月份比较
+          case 1:
+            viewDate = inMoth;
+            break;
+          // years 视图，与当前年份比较
+          case 2:
+            viewDate = inYear;
+            break;
+        }
+        return date.valueOf() != viewDate+86400000*6 ? 'am-disabled' : '';
+      }
+    }).on('changeDate.datepicker.amui', function(ev) {
+      checkout.close();
+    }).data('amui.datepicker');
+
+    $("#set").click(function(){
+        var start=$("#start").val();
+        var end=$("#end").val();
+        if(!start||!end){
+            alert('请选择起始时间');
+            return false;
+        }
+        $.post('{$__ROOT__}/admin/sign_set',{
+            start:start,
+            end:end,
+            rule:$("#rule").val()
+        },function(rs){
+            alert(rs.msg);
+        },'json')
+    });
+  });
+</script>    
+</div>
+{include file='bottom'}

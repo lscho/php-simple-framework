@@ -18,6 +18,10 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
 <script src="{$__ROOT__}/static/home/js/jquery.min.js"></script>
+<style>
+.day7 { position:absolute ; z-index:99; right:10px; top:30%}
+.day7 ul li { line-height:36px;}
+</style>
 </head>
 <body>
 
@@ -25,12 +29,25 @@
 
 <div class="page page3">
 	<div class="img31"><img src="{$__ROOT__}/static/home/images/img31.png" alt=""></div>
-	<div class="img32"><a href="{$__ROOT__}/?step=4"><img src="{$__ROOT__}/static/home/images/img32.png" alt=""></a></div>
+    <div class="day7">
+    <ul>
+    {foreach $daylist k=>v}
+    <li><a href="{$__ROOT__}/?step=4&day={$v}">Day<?php echo $k+1; ?></a></li>
+    {/foreach}
+    </ul>
+    </div>
+	<div class="img32"><a id="click" href="{$__ROOT__}/?step=4"><img src="{$__ROOT__}/static/home/images/img32.png" alt=""></a></div>
 </div>
-
-
-
-
 <script src="{$__ROOT__}/static/home/js/main.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var rule="{$rule.rule}";
+        $("#click").click(function(){
+            if(rule.length>0){
+                alert(rule);
+            }
+        });
+    });
+</script>
 </body>
 </html>

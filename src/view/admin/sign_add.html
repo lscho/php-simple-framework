@@ -1,0 +1,44 @@
+{include file='header'}
+<div class="am-cf admin-main">
+    {include file='sidebar'}
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-cf am-padding am-padding-bottom-0">
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">报名规则编辑</strong> / <small>Rule edit</small></div>
+            </div>
+            <hr/>
+            <div class="am-g">
+                <div class="am-u-sm-12 am-u-md-8">
+                    <form class="am-form am-form-horizontal"  data-am-validator method="post" action="{$__ROOT__}/admin/sign_add/{$info.id}">
+                        <div class="am-form-group">
+                            <label for="user-name" class="am-u-sm-3 am-form-label">日期</label>
+                            <div class="am-u-sm-9">
+                                <select name="times" data-am-selected>
+                                {foreach $date k=>v}
+                                  <option value="{$v}" {if $info.times==$v}selected{/if}>{$v}</option>
+                                {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="user-name" class="am-u-sm-3 am-form-label">任务</label>
+                            <div class="am-u-sm-9">
+                                <textarea name="rule">{$info.rule}</textarea>
+                            </div>
+                        </div>
+  
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                <button type="button" id="rule-add" class="am-btn am-btn-primary">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {include file='footer'}
+    </div>
+    <!-- content end -->
+</div>
+{include file='bottom'}
