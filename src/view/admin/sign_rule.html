@@ -45,7 +45,6 @@
                                         <input type="checkbox" />
                                     </th>
                                     <th class="table-id">序号</th>
-                                    <th class="table-title">时间</th>
                                     <th class="table-type">签到任务</th>
                                     <th class="table-type">操作</th>
                                 </tr>
@@ -56,8 +55,7 @@
                                     <td>
                                         <input type="checkbox" />
                                     </td>
-                                    <td><?php echo $k+1?></td>
-                                    <td><?php echo date('Y-m-d',$v['times'])?></td>
+                                    <td>{$v.times}</td>
                                     <td>{$v.rule}</td>
                                     <td>
                                         <a href="{$__ROOT__}/admin/sign_add/{$v.id}" class="am-btn am-btn-primary am-btn-xs">编辑</a>

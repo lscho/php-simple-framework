@@ -18,6 +18,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
 <script src="{$__ROOT__}/static/home/js/jquery.min.js"></script>
+<script src="{$__ROOT__}/static/home/layer/layer.js"></script>
 </head>
 <body>
 
@@ -32,20 +33,33 @@
 		<p>当前共 {$top.total} 人参与打卡</p>
 		<p>恭喜您排名第{$top.pm}</p>
 	</div>
-	<div class="btn51"><a href="{$__ROOT__}/">累积打卡7天  获得奖品</a></div>
+	<div class="btn51"><a href="javascript:" data-total="{$total}" id="total">{if $total==7}七天打卡完成 提交个人信息{else}累积打卡7天  获得奖品{/if}</a></div>
 	<div class="sign-days">
 		<p>打卡全纪录</p>
+        <ul>
 		{foreach $list k=>v}
 		{if $v}
-		<img src="{$__ROOT__}/{$v}" alt="">
+		<li>
+            
+            <a href="{$__ROOT__}/main/like?id={$v.id}"><img src="{$__ROOT__}/{$v.src}" alt=""></a>
+            
+            <!--<img src="{$__ROOT__}/{$v.src}" alt="">-->
+        </li>
 		{else}
-		<img src="{$__ROOT__}/static/home/images/img52-1.png" alt="">
+		<li><img src="{$__ROOT__}/static/home/images/img52-0.png" alt=""></li>
 		{/if}
 		{/foreach}
+        </ul>
 	</div>
     <div class="suwis-testdrive-form ">
     <a class="btn" href="javascript:" id="o">分享</a>
     </div>
+</div>
+
+<div id="form" style="display: none;">
+    <input name="names" placeholder="姓名" />
+
+    <input name="mobile" placeholder="电话" />
 </div>
 <script src="{$__ROOT__}/static/home/js/main.js"></script>
 <script type="text/javascript">
@@ -53,6 +67,46 @@
 		$("#o").click(function(){
 			$('.suwis-share-mask').fadeToggle();
 		});
+        $("#total").click(function(){
+            var total=parseInt($(this).data('total'));
+            if(total!=7){
+                layer.open({
+                    content: '累积打卡7天即可参与抽奖，获得奖品。',
+                    btn: ['OK']
+                });                
+            }else{
+                var form = layer.open({
+                      type: 1,
+                      content: $('#form').html(),
+                      btn: ['提交','取消'],
+                      style: 'position:fixed; left:0; top:0; width:50%; height:50%; border:none;',
+                      yes: function(){
+                        var name=$(".layermcont [name='names']").val();
+                        var mobile=$(".layermcont [name='mobile']").val();
+                        if(!name||!mobile||mobile.length!=11){
+                            layer.open({content: '请填写正确的姓名和联系电话', time: 1});
+                            return false;
+                        }
+                        $.post('{$__ROOT__}/seven/save',{
+                            name:name,
+                            mobile,mobile
+                        },function(rs){
+                            layer.open({
+                              content: rs.msg,
+                              btn: ['OK'],
+                              yes:function(index){
+                                if(rs.status==1){
+                                    layer.closeAll();
+                                }else{
+                                    layer.close(index);
+                                }
+                              }
+                            });                            
+                        },'json');
+                      }
+                });
+            }
+        });
 	})
 </script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -104,9 +158,10 @@ wx.config({
 });
 //微信分享默认数据配置，全局变量，根据答案动态改变wechat_sharedata参数
 var wechat_sharedata = {
-    title: '福特翼博-效傲全城（城市冒险计划-挑战人鱼线）',
-    desc: '累积打卡7天，即可获得奖品',
-    link: 'http://h5.jiang-mei.com/yiboh5/cms/'
+    title: '福特翼搏“效傲全城”城市冒险计划--挑战人鱼线',
+    desc: '要掌控人生，先掌控身体；想要做，不要等；迈出效率派的第一步；加入打卡行动，挑战人鱼线！',
+    link: 'http://h5.jiang-mei.com/yiboh5/cms/',
+    imgUrl:'{$src}'
 }
 
 wx.ready(function() {

@@ -15,19 +15,20 @@
                             <thead>
                                 <tr>
                                     <th class="table-check">
-                                        <input type="checkbox" />
+                                        <input type="checkbox" id="all" />
                                     </th>
                                     <th class="table-id">id</th>
                                     <th class="table-title">用户标识</th>
                                     <th class="table-type">签到时间</th>
                                     <th class="table-type">上传照片</th>
+                                    <th class="table-type">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {foreach $info k=>v}
                                 <tr>
                                     <td>
-                                        <input type="checkbox" />
+                                        <input type="checkbox" name="ids[]" value="{$v.id}" />
                                     </td>
                                     <td>{$v.id}</td>
                                     <td>{$v.openid}</td>
@@ -35,10 +36,20 @@
                                     <td>
                                         <img src="{$__ROOT__}/{$v.src}" style="width: 50px;height: 30px;">
                                     </td>
+                                    <td>
+                                        <button type="button" class="am-btn am-btn-default am-radius del" data-id="{$v.id}" data-openid="{$v.openid}">删除</button>
+                                    </td>
                                 </tr>
                                 {/foreach}
                             </tbody>
                         </table>
+                        <!--
+                        <div class="am-g">
+                            <div class="am-u-sm-12">
+                                <button type="button" class="am-btn am-btn-default am-radius" id="del">删除选中</button>
+                            </div>
+                        </div>    
+                        -->                     
                         <div class="am-cf">
                             共{$total}条记录
                         </div>
@@ -50,5 +61,25 @@
         {include file='footer'}
     </div>
     <!-- content end -->
+    <script type="text/javascript">
+        $("#all").click(function(){
+            $("[name='ids[]']").prop("checked",$(this).is(':checked'));
+        });
+        $(".del").click(function(){
+            if(confirm('确认要删除吗?')){
+                var id=$(this).data('id');
+                var openid=$(this).data('openid');
+                $.post('{$__ROOT__}/admin/sign_delete',{
+                    openid:openid,
+                    id:id
+                },function(rs){
+                    alert(rs.msg);
+                    if(rs.status==1){
+                        window.location.reload();
+                    }
+                },'json')
+            }
+        });
+    </script>
 </div>
 {include file='bottom'}

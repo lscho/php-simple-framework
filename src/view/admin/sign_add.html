@@ -15,9 +15,11 @@
                             <label for="user-name" class="am-u-sm-3 am-form-label">日期</label>
                             <div class="am-u-sm-9">
                                 <select name="times" data-am-selected>
-                                {foreach $date k=>v}
-                                  <option value="{$v}" {if $info.times==$v}selected{/if}>{$v}</option>
-                                {/foreach}
+                                <?php 
+                                    for($i=1;$i<8;$i++){
+                                ?>
+                                  <option value="{$i}" {if $info.times==$i}selected{/if}>第{$i}天</option>
+                                <?php }?>
                                 </select>
                             </div>
                         </div>

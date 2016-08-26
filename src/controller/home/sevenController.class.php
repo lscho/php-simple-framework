@@ -14,13 +14,14 @@ class sevenController extends baseController{
 	* 进行签到
 	*/
 	function doAction(){
+		//获取任务开始时间
+		$model=new model('seven_set');
+		$set=$model->get('*',array('id'=>1));
+		$start=$set['start']?$set['start']:strtotime(date('Ymd'));	
 		//检测是否有签到记录
 		$data['openid']=$_SESSION['openid'];
-		$data['addtime']=empty($_POST['date'])?strtotime(date('Y-m-d')):strtotime($_POST['date']);
+		$data['addtime']=empty($_POST['date'])?strtotime(date('Y-m-d')):$start+86400*($_POST['date']-1);
 		$is_sign=$this->list->has(array('AND'=>$data));
-		if($is_sign){
-			$this->json('已经签到过了',0);
-		}
 		//检测是否上传图片
 		if(empty($_POST["img"])){
 			$this->json('请上传图片',0);
@@ -32,9 +33,13 @@ class sevenController extends baseController{
 		$img = base64_decode(str_replace('data:image/jpeg;base64,', "", $_POST['img']));
 		$src=$file_path.date('Ymdhis').rand(1000,9999).'.jpg';
 		file_put_contents($src, $img);
-		$data['src']=$src;
 		//写入签到记录
-		$res=$this->list->insert($data);
+		if($is_sign){
+			$res=$this->list->update(array('src'=>$src),array('AND'=>$data));
+		}else{
+			$data['src']=$src;
+			$res=$this->list->insert($data);
+		}
 		if(!$res){
 			$this->json('签到失败',0);
 		}
@@ -50,6 +55,20 @@ class sevenController extends baseController{
 			//有记录则更新数据
 			$this->user->update(array('addtime'=>$data['addtime'],'total[+]'=>1),$map);
 		}
-		$this->json('签到成功',1);
+		$this->json($is_sign?'修改成功':'签到成功',1);
+	}
+
+	/*
+	* 填写用户电话和姓名
+	*/
+	function saveAction(){
+		//判断签到次数
+		$info=$this->user->get('*',array('openid'=>$_SESSION['openid']));
+		if($info['total']!=7){
+			$this->json('累积打卡7天才能参与抽奖',0);
+		}
+		//保存用户信息
+		$rs=$this->user->update($_POST,array('openid'=>$_SESSION['openid']));
+		$rs?$this->json('提交成功'):$this->json('提交失败',0);
 	}
 }

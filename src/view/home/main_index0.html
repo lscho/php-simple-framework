@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<link rel="stylesheet" href="{$__ROOT__}/static/home/css/main.css">
+<link rel="stylesheet" type="text/css" href="{$__ROOT__}/static/home/css/loaders.css"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=0">
+<meta name="imagemode" content="force">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="shortcut icon" type="image/x-icon" href="">
+<link rel="apple-touch-icon-precomposed" href="">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+<link rel="stylesheet" href="{$__ROOT__}/static/home/dist/css/swiper.min.css">
+<link rel="stylesheet" href="{$__ROOT__}/static/home/css/animate.min.css">
+<script src="{$__ROOT__}/static/home/js/jquery.min.js"></script>
+<script src="{$__ROOT__}/static/home/dist/js/swiper.min.js"></script>
+<script src="{$__ROOT__}/static/home/layer/layer.js"></script>
+</head>
+<body>
+<div class="swiper-container">
+	<div class="swiper-wrapper">
+		
+		<div class="swiper-slide">
+			<div class="page page0 am-rel">
+				<img src="{$__ROOT__}/static/home/images/logo.png" class="am-img-responsive am-hide _logo fade-in-down" style="top:6.5%;left:12%;width:75%;">
+				<img src="{$__ROOT__}/static/home/images/btn01.png" class="am-img-responsive am-hide _btn fade-in-up" style="bottom:8%;left:0%;width:100%;">
+			</div>
+		</div>
+		
+		<div class="swiper-slide">
+			<div class="page page1 am-rel">
+				<img src="{$__ROOT__}/static/home/images/logo1.png" class="am-img-responsive am-hide _logo fade-in-down" style="top:6.5%;left:12%;width:75%;">
+				<div class="video">
+					<img src="{$__ROOT__}/static/home/images/do.png" />
+					<video id="video1" src="http://cdn1.jiang-mei.com/v.mp4" preload="none" controls>您的浏览器不支持vedio，请更换浏览器再观看！ </video>
+					<!-- <embed  src="http://player.youku.com/player.php/sid/XMTY4MDkxNjAwMA==/v.swf" allowFullScreen="true" quality="high" width="320" height="200" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"> 
+					<!-- <video id="myVideo" class="myVideo" src="http://cdn1.jiang-mei.com/v.mp4" webkit-playsinline="true" x-webkit-airplay="true"></video> -->
+				</div>
+				<img src="{$__ROOT__}/static/home/images/btn02.png" class="am-img-responsive am-hide _btn1 fade-in-up" style="bottom:18%;left:0%;width:100%;">
+				<img src="{$__ROOT__}/static/home/images/btn03.png" class="am-img-responsive am-hide _btn2 fade-in-up" style="bottom:8%;left:0%;width:100%;">
+			</div>
+		</div>
+
+		<div class="swiper-slide">
+			<div class="page page2 am-rel">
+				<img src="{$__ROOT__}/static/home/images/txt21.png" class="am-img-responsive am-hide _txt fade-in-down" style="top:18%;left:0%;width:100%;">
+				<img src="{$__ROOT__}/static/home/images/btn02.png" class="am-img-responsive am-hide _btn fade-in-up" style="bottom:8%;left:0%;width:100%;">
+			</div>
+		</div>
+
+		<div class="swiper-slide">
+			<div class="page page3 am-rel">
+				<!--
+            	<div class="day7" style="position:absolute;bottom:0;">
+					<ul style="width:100%;">                
+						<li style="float:left;width:30px;margin-right:5px;"><a href="javascript:void(0)" class="_days _day1" data="1">Day1</a></li>
+						<li style="float:left;width:30px;margin-right:5px;"><a href="javascript:void(0)" class="_days _day2" data="2">Day2</a></li>
+						<li style="float:left;width:30px;margin-right:5px;"><a href="javascript:void(0)" class="_days _day3" data="3">Day3</a></li>
+						<li style="float:left;width:30px;margin-right:5px;"><a href="javascript:void(0)" class="_days _day4" data="4">Day4</a></li>
+						<li style="float:left;width:30px;margin-right:5px;"><a href="javascript:void(0)" class="_days _day5" data="5">Day5</a></li>
+						<li style="float:left;width:30px;margin-right:5px;"><a href="javascript:void(0)" class="_days _day6" data="6">Day6</a></li>
+						<li style="float:left;width:30px;"><a href="javascript:void(0)" class="_days _day7" data="7">Day7</a></li>
+					</ul>
+                </div>
+				-->
+				<img src="{$__ROOT__}/static/home/images/day1{if $day==1}s{/if}.png" class="am-img-responsive am-hide _day _day1 zoomIn" data="1" style="top:0%;left:0%;width:100%;{if $day==1}z-index: 999;{/if}">
+				<img src="{$__ROOT__}/static/home/images/day2{if $day==2}s{/if}.png" class="am-img-responsive am-hide _day _day2 zoomIn" data="2" style="top:4%;left:0%;width:100%;{if $day==2}z-index: 999;{/if}">
+				<img src="{$__ROOT__}/static/home/images/day3{if $day==3}s{/if}.png" class="am-img-responsive am-hide _day _day3 zoomIn" data="3" style="top:7.4%;left:0%;width:100%;{if $day==3}z-index: 999;{/if}">
+				<img src="{$__ROOT__}/static/home/images/day4{if $day==4}s{/if}.png" class="am-img-responsive am-hide _day _day4 zoomIn" data="4" style="top:19.6%;left:0%;width:100%;{if $day==4}z-index: 999;{/if}">
+				<img src="{$__ROOT__}/static/home/images/day5{if $day==5}s{/if}.png" class="am-img-responsive am-hide _day _day5 zoomIn" data="5" style="top:36.2%;left:0%;width:100%;{if $day==5}z-index: 999;{/if}">
+				<img src="{$__ROOT__}/static/home/images/day6{if $day==6}s{/if}.png" class="am-img-responsive am-hide _day _day6 zoomIn" data="6" style="top:32%;left:0%;width:100%;{if $day==6}z-index: 999;{/if}">
+				<img src="{$__ROOT__}/static/home/images/day7{if $day==7}s{/if}.png" class="am-img-responsive am-hide _day _day7 zoomIn" data="7" style="top:61.6%;left:0%;width:100%;{if $day==7}z-index: 999;{/if}">
+				<input id="rule" value="{$set.rule}" type="hidden" />
+				<div class="img32"><a id="click" href="{$__ROOT__}/?step=4"><img src="{$__ROOT__}/static/home/images/img32.png" alt=""></a></div>
+				<div class="img33"><a id="daka" href="javascript:void(0)"><img src="{$__ROOT__}/static/home/images/ljdk.png" alt=""></a></div>
+			</div>
+		</div>
+
+		<div class="swiper-slide">
+			<div class="page page4 am-rel">
+				<div id="loading" style="position: absolute;top: 50%;z-index: 11;text-align: center;width: 100%;display: none;">
+					<div class="loader-inner ball-pulse">
+					  <div></div>
+					  <div></div>
+					  <div></div>
+					</div>
+				</div>  
+				<img src="" class="am-img-responsive am-hide _mission fade-in-down" style="top:18%;left:0%;width:100%;">
+				<!--
+				<div class="txt41"><img src="{$__ROOT__}/static/home/images/txt41.png" alt=""><span>{$rule.rule}</span></div>
+				-->
+				<form method="post" action="{$__ROOT__}/seven/do" enctype="multipart/form-data">
+					<div class="upload" style="overflow:hidden; text-align:center">
+						<img src="{$__ROOT__}/{$info.src}" id="img" style="width:auto ;height:100%;{if !$info}display: none;{/if}">
+						<span id="txt">点击上传照片</span>
+						<input type="file" name="img" id="file" >
+					</div>
+				</form>
+				<div class="btn42" style="z-index: 10;bottom: 23%;"><a href="javascript:void(0)" id="do">{if $info}我要修改{else}完成打卡{/if}</a></div>
+				<div class="btn12" style="bottom: 16%;"><a href="{$__ROOT__}/?step=5">打卡历史</a></div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<audio id="music" preload="auto" autoplay="autoplay" loop src="{$__ROOT__}/static/home/video/bg.mp3"></audio>
+<audio id="bg" preload="auto" src=""></audio>
+
+<script src="{$__ROOT__}/static/home/js/main.js"></script>
+<script src="{$__ROOT__}/static/home/rz/lrz.bundle.js"></script>
+
+<script>
+var swiper;
+var day = 0;
+var now = "{$day}";
+var music = document.getElementById("music");
+
+var videoObj = document.getElementById("video1");
+
+$(document).ready(function(){
+	
+	console.info('今天是第' + now + '天');
+
+	$("#click").click(function(){
+		var href=this.href;
+		if($("#rule").val()){
+			layer.open({
+			  content: $("#rule").val(),
+			  btn: ['OK']
+			});
+		}
+		return false;
+	});	
+
+	swiper = new Swiper('.swiper-container',{
+		onSlidePrevStart: function(swiper){
+			
+		},
+		onSlidePrevEnd: function(swiper){
+			
+		},
+		onSlideNextEnd: function(swiper){
+			
+		}
+	});
+
+	loadPage0();
+
+	var img;
+	function getObjectURL(file) {
+		var url = null;
+		if (window.createObjectURL != undefined) { // basic
+			url = window.createObjectURL(file);
+		} else if (window.URL != undefined) { // mozilla(firefox)
+			url = window.URL.createObjectURL(file);
+		} else if (window.webkitURL != undefined) { // webkit or chrome
+			url = window.webkitURL.createObjectURL(file);
+		}
+		return url;
+	}
+	$('#file').on('change',function(){
+	    lrz(this.files[0])
+	        .then(function (rst) {
+	        	$("#img").attr('src',rst.base64);
+	        	img=rst.base64;
+	            $("#img").show();
+	            console.log(rst);
+	        })
+	        .catch(function (err) {
+	            // 处理失败会执行
+	        })
+	        .always(function () {
+	            // 不管是成功失败，都会执行
+	        });
+	});
+	$("#do").click(function(){
+		if(!img){
+            layer.open({
+                content: '上传图片进行签到',
+                btn: ['OK']
+            });
+			return false;                
+		}
+		$("#loading").show();
+		$.post('{$__ROOT__}/seven/do',{
+			img:img
+		},function(rs){
+			$("#loading").hide();
+			// 播放声音
+			$('#music').attr('src','{$__ROOT__}/static/home/video/pickup.mp3');
+			music.play();
+            layer.open({
+                content: rs.msg,
+                btn: ['OK'],
+                yes:function(index){
+                	layer.close(index);
+					window.location.href="{$__ROOT__}/?step=5";
+                }
+            });
+		},'json');
+	});
+
+});
+
+
+// 定义定时器
+var tt1,tt2,tt3,tt4,tt5,tt6,tt7,tt8,tt9,tt10,tt11,tt12;
+
+var loadPage0 = function(){
+
+	swiper.lockSwipeToPrev();
+	swiper.lockSwipeToNext();
+
+	tt1 = setTimeout(function(){
+		$('.page0 ._logo, .page0 ._btn').removeClass('am-hide').addClass('active');
+	},600);
+
+	$('.page0 ._btn').click(function(){
+		
+		setTimeout(function(){
+			swiper.unlockSwipeToNext();
+			swiper.slideNext();
+			loadPage1();
+		},400);
+
+	});
+}
+
+var loadPage1 = function(){
+
+	swiper.lockSwipeToPrev();
+	swiper.lockSwipeToNext();
+
+	tt1 = setTimeout(function(){
+		$('.page1 ._logo, .page1 ._btn1, .page1 ._btn2').removeClass('am-hide').addClass('active');
+	},600);
+
+	/**
+	tt1 = setTimeout(function(){
+		music.pause();
+		videoObj.play();
+	},1000);
+	**/
+
+	// 监听视频播放停止
+	videoObj.addEventListener('ended',function(){
+		music.play();
+	});
+
+	// 监听视频播放停止
+	videoObj.addEventListener('pause',function(){
+		music.play();
+	});
+
+	// 监听视频播放开始
+	videoObj.addEventListener('play',function(){
+		music.pause();
+	});
+
+	$('.page1 ._btn1').click(function(){
+		
+		setTimeout(function(){
+			//videoObj.pause();
+			//music.play();
+			swiper.unlockSwipeToNext();
+			swiper.slideNext();
+			loadPage2();
+		},400);
+
+	});
+}
+
+var loadPage2 = function(){
+
+	swiper.lockSwipeToPrev();
+	swiper.lockSwipeToNext();
+
+	tt1 = setTimeout(function(){
+		$('.page2 ._txt,.page2 ._btn').removeClass('am-hide').addClass('active');
+	},600);
+
+	$('.page2 ._btn').click(function(){
+		
+		setTimeout(function(){
+			swiper.unlockSwipeToNext();
+			swiper.slideNext();
+			loadPage3();
+		},400);
+
+	});
+}
+
+var loadPage3 = function(){
+
+	swiper.lockSwipeToPrev();
+	swiper.lockSwipeToNext();
+
+	tt1 = setTimeout(function(){
+		$('.page3 ._day').removeClass('am-hide').addClass('active');
+	},600);
+
+	tt2 = setTimeout(function(){
+		$('.page3 ._day'+now).removeClass('active zoomIn').addClass('flash active').css('z-index','9999');
+	},2000);
+
+	$('.page3 #daka').click(function(){
+		
+		var data = now;
+		console.log(data);
+		day = data?data:0;
+		/*
+		if(data!="{$day}"){
+            layer.open({
+                content: "请选择正确的签到时间！",
+                 btn: ['OK']
+            });
+            return false;		
+		}
+		*/
+		swiper.unlockSwipeToNext();
+		swiper.slideNext();
+		loadPage4(data);
+	});
+
+	$('.page3 ._days').click(function(){
+		
+		var data = $(this).attr('data');
+		console.log(data);
+		day = data?data:0;
+		/*
+		if(data!="{$day}"){
+            layer.open({
+                content: "请选择正确的签到时间！",
+                 btn: ['OK']
+            });
+            return false;		
+		}
+		*/
+		swiper.unlockSwipeToNext();
+		swiper.slideNext();
+		loadPage4(data);
+	});
+}
+
+var loadPage4 = function(day){
+	swiper.unlockSwipeToPrev();
+	swiper.lockSwipeToNext();
+
+	$('.page4 ._mission').attr('src', '{$__ROOT__}/static/home/images/mission'+day+'.png');
+
+	$('.page4 ._mission').removeClass('am-hide').addClass('active');
+
+}
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+// 微信配置
+wx.config({
+    debug: false,
+    url : "{$signPackage['url']}",
+    appId: "{$signPackage['appid']}",
+    timestamp: "{$signPackage['timestamp']}",
+    nonceStr: "{$signPackage['noncestr']}",
+    signature: "{$signPackage['signature']}",
+    jsApiList: [
+        'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'hideMenuItems',
+        'showMenuItems',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+        'translateVoice',
+        'startRecord',
+        'stopRecord',
+        'onRecordEnd',
+        'playVoice',
+        'pauseVoice',
+        'stopVoice',
+        'uploadVoice',
+        'downloadVoice',
+        'chooseImage',
+        'previewImage',
+        'uploadImage',
+        'downloadImage',
+        'getNetworkType',
+        'openLocation',
+        'getLocation',
+        'hideOptionMenu',
+        'showOptionMenu',
+        'closeWindow',
+        'scanQRCode',
+        'chooseWXPay',
+        'openProductSpecificView',
+        'addCard',
+        'chooseCard',
+        'openCard'
+    ]
+});
+//微信分享默认数据配置，全局变量，根据答案动态改变wechat_sharedata参数
+var wechat_sharedata = {
+    title: '福特翼搏“效傲全城”城市冒险计划--挑战人鱼线',
+    desc: '要掌控人生，先掌控身体；想要做，不要等；迈出效率派的第一步；加入打卡行动，挑战人鱼线！',
+    link: 'http://h5.jiang-mei.com/yiboh5/cms/',
+    imgUrl:'{$src}'
+}
+
+wx.ready(function() {
+
+    // 分享好友接口
+    wx.onMenuShareAppMessage({
+        title: wechat_sharedata.title,
+        desc: wechat_sharedata.desc,
+        link: wechat_sharedata.link,
+        imgUrl: wechat_sharedata.imgUrl,
+        trigger: function (res) {
+            //alert('用户点击发送给朋友');
+        },
+        success: function (res) {
+            //alert('已分享');
+        },
+        cancel: function (res) {
+            //alert('已取消');
+        },
+        fail: function (res) {
+            //alert(JSON.stringify(res));
+        }
+    });
+
+    // 分享朋友圈接口
+    wx.onMenuShareTimeline({
+        title: wechat_sharedata.title,
+        link: wechat_sharedata.link,
+        imgUrl: wechat_sharedata.imgUrl,
+        trigger: function (res) {
+            //alert('用户点击分享到朋友圈');
+        },
+        success: function (res) {
+            //alert('已分享');
+        },
+        cancel: function (res) {
+            //alert('已取消');
+        },
+        fail: function (res) {
+            //alert(JSON.stringify(res));
+        }
+    });
+
+});
+
+wx.error(function (res) {
+    alert(res.errMsg);
+});
+</script>
+</body>
+</html>

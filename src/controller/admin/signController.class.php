@@ -54,28 +54,14 @@ class signController extends baseController{
 	*/
 	function addAction(){
 		if($this->isget()){
-			//获取签到时间
-			$model=new model();
-			$model->table('seven_set');
-			$set=$model->get('*',array('id'=>1));
-			if($set){
-				for ($i=$set['start']; $i <=$set['end'] ; $i=$i+86400) { 
-					$list[]=date('Y-m-d',$i);
-				}
-			}
-			$this->assign('date',$list);
-
-			if(!empty($_GET['id'])){
-				$model->table('seven_rule');
-				$info=$model->get('*',array('id'=>$_GET['id']));
-				$info['times']=date('Y-m-d',$info['times']);
-				$this->assign('info',$info);
-			}
+			$model=new model('seven_rule');
+			$info=$model->get('*',array('id'=>$_GET['id']));
+			$this->assign('info',$info);
 			$this->display();
 		}else{
 			$model=new model();
 			$model->table('seven_rule');
-			$times=strtotime($_POST['times']);
+			$times=$_POST['times'];
 			$data['rule']=$_POST['rule'];
 			if(!$model->has(array('times'=>$times))){
 				$data['times']=$times;
@@ -111,4 +97,18 @@ class signController extends baseController{
 			$this->json('操作失败',0);
 		}
 	}
+	/*
+	* 批量操作
+	*/
+	function deleteAction(){
+		$model=new model();
+		$map['id']=$_POST['id'];
+		$rs=$model->table('seven_list')->delete($map);
+		if(!$num=$model->table('seven_list')->count(array('openid'=>$_POST['openid']))){
+			$res=$model->table('seven_user')->delete(array('openid'=>$_POST['openid']));
+		}else{
+			$res=$model->table('seven_user')->update(array('total'=>$num),array('openid'=>$_POST['openid']));
+		}
+		$rs?$this->json('操作成功'):$this->json('操作失败',0);
+	}	
 }
