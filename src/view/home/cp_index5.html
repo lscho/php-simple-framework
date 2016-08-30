@@ -57,9 +57,10 @@
 </div>
 
 <div id="form" style="display: none;">
-    <input name="names" placeholder="姓名" />
-
-    <input name="mobile" placeholder="电话" />
+<ul class="7dayform">
+    <li><input name="names" placeholder="姓名" /></li>
+    <li><input name="mobile" placeholder="电话" /></li>
+</ul>
 </div>
 <script src="{$__ROOT__}/static/home/js/main.js"></script>
 <script type="text/javascript">
@@ -78,8 +79,9 @@
                 var form = layer.open({
                       type: 1,
                       content: $('#form').html(),
+					  title: ['打卡完成 提交您的个人信息','background-color: #7d7c7c;color: #fff;'],
                       btn: ['提交','取消'],
-                      style: 'position:fixed; left:0; top:0; width:50%; height:50%; border:none;',
+                      style: 'position:fixed; left:5%; top:10%; width:90%; height:191px; border:none;',
                       yes: function(){
                         var name=$(".layermcont [name='names']").val();
                         var mobile=$(".layermcont [name='mobile']").val();

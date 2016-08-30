@@ -1135,7 +1135,6 @@ class Wechat
 			return false;
 		}
 		$sFile = '../cache/'.$sKey.'.json';
-		
 		$aBuf = array();
 		$aBuf[] = $expired ? (time() + intval($expired)) : 0;
 		$aBuf[] = serialize($value);

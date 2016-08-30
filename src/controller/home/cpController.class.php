@@ -113,6 +113,8 @@
 					break;
 				}
 			}
+			$data['total']+=300;
+			$data['pm']+=200;
 			return $data;
 		}
 
@@ -167,6 +169,4 @@
 			$this->assign('signPackage',$signPackage);
 			$_SESSION['openid']=$data['openid'];
 		}
-
-
 	}

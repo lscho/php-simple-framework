@@ -33,6 +33,15 @@ class sevenController extends baseController{
 		$img = base64_decode(str_replace('data:image/jpeg;base64,', "", $_POST['img']));
 		$src=$file_path.date('Ymdhis').rand(1000,9999).'.jpg';
 		file_put_contents($src, $img);
+		//旋转图片
+		if(!empty($_POST['deg'])){
+	        //创建图像资源，以jpeg格式为例
+	        $source = imagecreatefromjpeg($src);
+	        //使用imagerotate()函数按指定的角度旋转
+	        $rotate = imagerotate($source, $_POST['deg'], 0);
+	        //旋转后的图片保存
+	        imagejpeg($rotate,$src);
+		}
 		//写入签到记录
 		if($is_sign){
 			$res=$this->list->update(array('src'=>$src),array('AND'=>$data));

@@ -10,7 +10,7 @@ class signController extends baseController{
 	function sevenAction(){
 		$p=empty($_GET['p'])?1:$_GET['p'];
 		$model=new sevenUserModel();
-		$data=$model->setOrder('total desc,id asc')->getList(array(),$this->pageSize,$p);
+		$data=$model->setOrder('total desc,id asc')->getList(array(),20,$p);
 		$this->assign('list',$data['list']);
 		$this->assign('page',$data['page']);
 		$this->display();
@@ -111,4 +111,24 @@ class signController extends baseController{
 		}
 		$rs?$this->json('操作成功'):$this->json('操作失败',0);
 	}	
+
+	/*
+	* 添加伪用户数据
+	*/
+	function addsAction(){
+		$data['openid']='openid'.time();
+		$data['total']=0;
+		$data['addtime']=strtotime(date('ymd'));
+		$model=new model('seven_user');
+		$model->insert($data);
+		$this->jump(__ROOT__.'/admin/sign_seven');
+	}
+
+	/*
+	* 添加伪打卡记录
+	*/
+	function doAction(){
+		
+		$this->display();
+	}
 }

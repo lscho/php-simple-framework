@@ -84,8 +84,12 @@
 						<input type="file" name="img" id="file" >
 					</div>
 				</form>
-				<div class="btn42" style="z-index: 10;bottom: 23%;"><a href="javascript:void(0)" id="do">{if $info}我要修改{else}完成打卡{/if}</a></div>
-				<div class="btn12" style="bottom: 16%;"><a href="{$__ROOT__}/cp/?step=5">打卡历史</a></div>
+				<div id="sz" style="display: none;">
+					<img src="{$__ROOT__}/static/home/images/xz1.png" id="rotateLeft" class="am-img-responsive" style="top:69.5%;left:18%;width:9%;">
+					<img src="{$__ROOT__}/static/home/images/xz2.png" id="rotateRight" class="am-img-responsive" style="top:69.5%;right:18%;width:9%;">					
+				</div>
+				<div class="btn42" style="z-index: 10;bottom: 18%;"><a href="javascript:void(0)" id="do">{if $info}我要修改{else}完成打卡{/if}</a></div>
+				<div class="btn12" style="bottom: 11%;"><a href="{$__ROOT__}/cp/?step=5">打卡历史</a></div>
 			</div>
 		</div>
 
@@ -102,6 +106,8 @@ var swiper;
 var day = 0;
 var now = "{$day}";
 var music = document.getElementById("music");
+var img;
+var deg = 0;
 
 var videoObj = document.getElementById("video1");
 
@@ -134,24 +140,13 @@ $(document).ready(function(){
 
 	loadPage2();
 
-	var img;
-	function getObjectURL(file) {
-		var url = null;
-		if (window.createObjectURL != undefined) { // basic
-			url = window.createObjectURL(file);
-		} else if (window.URL != undefined) { // mozilla(firefox)
-			url = window.URL.createObjectURL(file);
-		} else if (window.webkitURL != undefined) { // webkit or chrome
-			url = window.webkitURL.createObjectURL(file);
-		}
-		return url;
-	}
 	$('#file').on('change',function(){
 	    lrz(this.files[0])
 	        .then(function (rst) {
 	        	$("#img").attr('src',rst.base64);
 	        	img=rst.base64;
 	            $("#img").show();
+	            $("#sz").show();
 	            console.log(rst);
 	        })
 	        .catch(function (err) {
@@ -172,7 +167,8 @@ $(document).ready(function(){
 		$("#loading").show();
 		$.post('{$__ROOT__}/seven/do',{
 			img:img,
-			date:day
+			date:day,
+			deg:deg
 		},function(rs){
 			$("#loading").hide();
 			// 播放声音
@@ -274,6 +270,18 @@ var loadPage4 = function(day){
 	$('.page4 ._mission').attr('src', '{$__ROOT__}/static/home/images/mission'+day+'.png');
 
 	$('.page4 ._mission').removeClass('am-hide').addClass('active');
+
+	// 向左旋转
+	$('#rotateLeft').click(function(){
+		deg -= 90;
+		$("#img").css('transform', 'rotate('+deg+'deg)');
+	});
+
+	// 向右旋转
+	$('#rotateRight').click(function(){
+		deg += 90;
+		$("#img").css('transform', 'rotate('+deg+'deg)');
+	});
 
 }
 </script>

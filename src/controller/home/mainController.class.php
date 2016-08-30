@@ -113,6 +113,8 @@
 					break;
 				}
 			}
+			$data['total']+=300;
+			$data['pm']+=200;			
 			return $data;
 		}
 
@@ -154,19 +156,46 @@
 			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 			$uri = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 			$signPackage = $weObj->getJsSign($uri);
+			/*
+			if(!cache('access')){	//没有缓存则获取新access_token
+				if (!isset($_GET['code'])) {
+					header("Location: ".$url);
+					exit;
+				}
+				$data = $weObj->getOauthAccessToken();
+				if (!$data) {
+					header("Location: ".$url);
+					exit;
+				}
+				cache('access',$data);
+			}else{					//有缓存则先续期
+				$access=cache('access');
+				$data=$weObj->getOauthRefreshToken($access['refresh_token']);
+				if(!$data){
+					if (!isset($_GET['code'])) {
+						header("Location: ".$url);
+						exit;
+					}
+					$data = $weObj->getOauthAccessToken();
+					if (!$data) {
+						header("Location: ".$url);
+						exit;
+					}
+					cache('access',$data);					
+				}
+			}
 			if (!isset($_GET['code'])) {
 				header("Location: ".$url);
 				exit;
 			}
+			*/
 			$data = $weObj->getOauthAccessToken();
 			if (!$data) {
 				header("Location: ".$url);
 				exit;
-			}
-			$userinfo = $weObj->getOauthUserinfo($data['access_token'], $data['openid']);
+			}			
+			//$userinfo = $weObj->getUserInfo($data['openid']);
 			$this->assign('signPackage',$signPackage);
 			$_SESSION['openid']=$data['openid'];
 		}
-
-
 	}
